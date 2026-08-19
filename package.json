@@ -13,10 +13,11 @@
     "check": "pnpm fmt:check && pnpm validate:skills",
     "fmt": "dprint fmt",
     "fmt:check": "dprint check",
-    "validate:skills": "node scripts/validate-skills.mjs"
+    "validate:skills": "tsx scripts/validate-skills.mts"
   },
   "devDependencies": {
-    "dprint": "^0.51.1"
+    "dprint": "^0.51.1",
+    "tsx": "^4.23.12"
   },
   "packageManager": "pnpm@10.28.2",
   "engines": {

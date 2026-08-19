@@ -1,0 +1,30 @@
+{
+  "expectations": [
+    {
+      "text": "measures-without-height-zero: measure inner auto-height node, not the constrained animating element",
+      "passed": true,
+      "evidence": "Two-element outer clipper + inner content; RO observes inner content at natural height; 'if you put both jobs on one element youre back to fighting the browser'."
+    },
+    {
+      "text": "resizeobserver-changing-content: RO so height updates on reflow/async content",
+      "passed": true,
+      "evidence": "RO subscribed to inner content while open; re-pins height on any size change; table row 'Content changes while open'."
+    },
+    {
+      "text": "animate-px-then-auto: handles height:auto animation correctly; accounts for auto after transition",
+      "passed": true,
+      "evidence": "Explains cant transition to/from auto, feeds pixel value; keeps px-pinned deliberately, discusses tradeoff of not snapping to auto (notes/trade-offs)."
+    },
+    {
+      "text": "correct-measure-timing: useLayoutEffect/rAF/RO, Math.ceil to avoid clipping",
+      "passed": true,
+      "evidence": "useIsomorphicLayoutEffect; getBoundingClientRect fractional to avoid 1px clip; borderBoxSize for transform safety. (No Math.ceil, but uses fractional read.)"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

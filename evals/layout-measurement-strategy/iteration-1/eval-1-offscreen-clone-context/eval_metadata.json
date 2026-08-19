@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "offscreen-clone-context",
+  "prompt": "I'm building virtualization for a feed. Before rendering a row I need its height so I can position rows. My approach: I clone the row node and append the clone to document.body with `position:absolute; visibility:hidden; height:auto`, then read `getBoundingClientRect().height`. It mostly works, but a bunch of rows come back noticeably shorter than they actually render, and rows in our themed \"compact density\" mode are especially wrong. The real rows live inside a container that uses container queries and CSS custom properties for spacing and font size. What's going wrong, and what should I do instead?",
+  "assertions": [
+    {"name": "identifies-body-context-loss", "text": "Explains that appending the clone to document.body drops the real CSS context — custom properties, ancestor/theme classes (compact density), and container ancestry — so styles revert and the measured height shrinks."},
+    {"name": "explains-container-query-break", "text": "Specifically identifies that container queries resolve against the container ancestor, which is absent or wrong-sized off-body, so queried styles (font-size/spacing) flip and change the height."},
+    {"name": "recommends-in-place-or-subtree", "text": "Recommends measuring in place or via a probe mounted inside the real subtree (or reproducing the container + real width), instead of body-append — e.g. ResizeObserver on the real in-place row."},
+    {"name": "fixes-inline-size", "text": "Notes the measurement must happen at the real inline size (width), since auto height is a function of width."},
+    {"name": "warns-copy-computed", "text": "Warns against copying getComputedStyle values onto the clone as the fix (freezes resolved lengths / kills re-resolution), or otherwise says to replicate ancestors rather than snapshot styles."}
+  ]
+}

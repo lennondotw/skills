@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "identifies-body-context-loss",
+      "passed": true,
+      "evidence": "body strips container-query context, custom-property inheritance chain, width constraint; compact worst."
+    },
+    {
+      "text": "explains-container-query-break",
+      "passed": true,
+      "evidence": "@container matches nearest container ancestor; severed on body -> baseline styles -> different height. 'you severed the ancestry.'"
+    },
+    {
+      "text": "recommends-in-place-or-subtree",
+      "passed": true,
+      "evidence": "Option A measure real rows after render (RO + cache); Option B pre-measure host inside real container, not body."
+    },
+    {
+      "text": "fixes-inline-size",
+      "passed": true,
+      "evidence": "'No width -> different wrapping'; set explicit width == real content-box width."
+    },
+    {
+      "text": "warns-copy-computed",
+      "passed": true,
+      "evidence": "'clones inherit CSS from their new position - which is exactly why position matters'; prefers moving real subtree over hand-cloning; replicate ancestors."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

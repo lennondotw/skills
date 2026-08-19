@@ -1,0 +1,30 @@
+{
+  "expectations": [
+    {
+      "text": "measures-without-height-zero: measure inner auto-height node, not the constrained animating element",
+      "passed": true,
+      "evidence": "Inner .auto-height__content stays height:auto in normal flow; RO observes it; container clips with overflow:hidden. Explicit 'measure the content, not the container'."
+    },
+    {
+      "text": "resizeobserver-changing-content: RO so height updates on reflow/async content",
+      "passed": true,
+      "evidence": "RO re-fires on resize rewrap, font swap, image load, async chunk; measuredHeight kept live even while closed."
+    },
+    {
+      "text": "animate-px-then-auto: handles height:auto animation correctly; accounts for auto after transition",
+      "passed": true,
+      "evidence": "Animates 0<->measured px; keeps px pinned + RO re-pin so growth isnt clipped; 'Two variations' discusses switching to height:auto after open transition tradeoff."
+    },
+    {
+      "text": "correct-measure-timing: useLayoutEffect/rAF/RO, Math.ceil to avoid clipping",
+      "passed": true,
+      "evidence": "useIsoLayoutEffect shim; Math.ceil on committed height; borderBoxSize preferred (reflow-free, transform-safe)."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "storybookUrl": "http://localhost:6009",
+  "figmaFileKey": "iwlDssSi4zlRLCaanZoTKp",
+  "generatedAt": "2026-07-14T09:13:48.555Z",
+  "maxAllowedDiffPercent": 1,
+  "maxDiffPercent": 8.1051,
+  "passed": false,
+  "results": [
+    {
+      "actual": "soft-gradient-pill-tab/02-actual-chromium@4x.png",
+      "diff": "soft-gradient-pill-tab/03-diff-pixelmatch.png",
+      "diffPercent": 8.1051,
+      "expected": "soft-gradient-pill-tab/01-expected-figma@4x.png",
+      "mismatchedPixels": 4806,
+      "size": "436x136",
+      "state": "soft-gradient-pill-tab",
+      "totalPixels": 59296
+    },
+    {
+      "actual": "gradient-stroke-pill-button/02-actual-chromium@4x.png",
+      "diff": "gradient-stroke-pill-button/03-diff-pixelmatch.png",
+      "diffPercent": 6.1116,
+      "expected": "gradient-stroke-pill-button/01-expected-figma@4x.png",
+      "mismatchedPixels": 2781,
+      "size": "316x144",
+      "state": "gradient-stroke-pill-button",
+      "totalPixels": 45504
+    }
+  ],
+  "scale": 4,
+  "threshold": 0.02
+}

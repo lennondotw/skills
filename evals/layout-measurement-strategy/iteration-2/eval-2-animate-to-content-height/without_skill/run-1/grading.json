@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "measures-without-height-zero",
+      "passed": true,
+      "evidence": "Two elements: container animates+clips, inner content measured via RO. 'Never measure the animating element itself.'"
+    },
+    {
+      "text": "resizeobserver-changing-content",
+      "passed": true,
+      "evidence": "RO on content re-measures on font swap/image/async/resize; releases to auto after expand."
+    },
+    {
+      "text": "animate-px-then-auto",
+      "passed": true,
+      "evidence": "Explicitly pins px then releases to height:auto on transitionend; handles auto->0 by pinning current px + forced reflow then rAF to 0."
+    },
+    {
+      "text": "correct-measure-timing",
+      "passed": true,
+      "evidence": "useLayoutEffect for measure + pin; borderBoxSize; first-commit gate to avoid flash. (No Math.ceil.)"
+    },
+    {
+      "text": "establishes-bfc-for-margins",
+      "passed": false,
+      "evidence": "Puts padding on inner wrapper and discusses box-sizing/padding vs scrollHeight, but does not establish a BFC (flow-root) nor explicitly address child margin collapse; the padding mitigation is incidental and unreasoned."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8,
+    "passed": 4,
+    "failed": 1,
+    "total": 5
+  }
+}

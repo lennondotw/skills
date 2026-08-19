@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "diagnoses-border-only",
+      "passed": true,
+      "evidence": "'border-only measurement (~2px)'; borderBoxHeight - chromeHeight approx 0 means layout hasnt happened."
+    },
+    {
+      "text": "uses-resizeobserver-settle",
+      "passed": true,
+      "evidence": "Fix 2 uses ResizeObserver, commits only changed trusted value; re-fires on stream/font/image."
+    },
+    {
+      "text": "rejects-border-only-guard",
+      "passed": true,
+      "evidence": "trustHeight() rejects borderBoxH-chromeH<=1, near-zero, implausible collapse; gate on height!=null."
+    },
+    {
+      "text": "handles-content-readiness",
+      "passed": true,
+      "evidence": "document.fonts.ready + RO catching image decode + stream chunks."
+    },
+    {
+      "text": "abandons-oneshot-mount",
+      "passed": true,
+      "evidence": "Replaces one-shot useLayoutEffect; explains it reads the guaranteed-wrong instant."
+    },
+    {
+      "text": "prefers-css-first",
+      "passed": true,
+      "evidence": "Fix 1 (preferred): 'dont measure - let CSS place the badge' via position:absolute top/right; recommendation reiterates delete the measurement."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 6,
+    "failed": 0,
+    "total": 6
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "diagnoses-border-only: measured before async/streamed content laid out, offsetHeight returns only chrome/border (~2px)",
+      "passed": true,
+      "evidence": "TL;DR + Diagnosis explicitly name 'border-only measurement of ~2px', empty body on first commit, chrome border only."
+    },
+    {
+      "text": "uses-resizeobserver-settle: observe and take settled value, not a single mount read",
+      "passed": true,
+      "evidence": "ResizeObserver hook; commits only when stable across two consecutive RO deliveries ('settled' signal)."
+    },
+    {
+      "text": "rejects-border-only-guard: refuses border-only/near-zero measurement",
+      "passed": true,
+      "evidence": "isTrustworthy() predicate rejects borderBoxH - chromeH <= 1 and implausible collapse; consumer gates badge on height != null."
+    },
+    {
+      "text": "handles-content-readiness: fonts/images cause late height change",
+      "passed": true,
+      "evidence": "Explains fonts swap + image decode; adds document.fonts.ready nudge for deterministic settle."
+    },
+    {
+      "text": "abandons-oneshot-mount: recognizes one-shot read is the root problem",
+      "passed": true,
+      "evidence": "'Why measure at the right instant cant be the fix' section; replaces [] effect with observe-and-settle."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

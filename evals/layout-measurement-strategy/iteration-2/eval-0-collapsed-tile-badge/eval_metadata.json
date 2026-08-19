@@ -1,0 +1,13 @@
+{
+  "eval_id": 0,
+  "eval_name": "collapsed-tile-badge",
+  "prompt": "We have a widget preview in our design tool. Each widget renders inside a host \"chrome\" wrapper (a div with border + padding), and the widget body inside it is auto-height. A Stage badge is absolutely positioned in the top-right corner of each tile, and we place it using the tile's measured height. Bug: on first render some tiles collapse to about 2px tall and the badge sits in the wrong place overlapping the border; a moment later the tile jumps to its full height and the badge looks fine. The tile body streams its content in asynchronously and can contain web-font text and images. Here's our measuring code:\n\n```tsx\nuseLayoutEffect(() => {\n  const h = tileRef.current!.offsetHeight;\n  setTileHeight(h);\n}, []);\n```\n\nWhy is this happening, and how do we fix it robustly?",
+  "assertions": [
+    {"name": "diagnoses-border-only", "text": "Correctly diagnoses that the tile is measured before its async/streamed content has laid out, so offsetHeight returns only the chrome/border (~2px) — a border-only / collapsed measurement."},
+    {"name": "uses-resizeobserver-settle", "text": "Recommends a ResizeObserver (or equivalent observe-and-settle approach) to take the height once it settles, instead of a single mount-time read."},
+    {"name": "rejects-border-only-guard", "text": "Adds a validity guard that refuses the border-only / near-zero measurement rather than committing it downstream."},
+    {"name": "handles-content-readiness", "text": "Addresses content readiness — web fonts (document.fonts.ready) and/or images (load/decode) — as the reason the height changes after the first read."},
+    {"name": "abandons-oneshot-mount", "text": "Does not keep the single useLayoutEffect offsetHeight-on-mount as the fix; recognizes the one-shot read is the root problem."},
+    {"name": "prefers-css-first", "text": "Notes that a corner badge positioned with absolute top/right does not actually need the measured tile height, i.e. considers avoiding the JS measurement where the layout engine can position it directly."}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "diagnoses-border-only",
+      "passed": true,
+      "evidence": "'~2px = chrome top+bottom border'; empty auto-height body contributes 0."
+    },
+    {
+      "text": "uses-resizeobserver-settle",
+      "passed": true,
+      "evidence": "useMeasuredHeight RO updates on every reflow; not a one-shot read."
+    },
+    {
+      "text": "rejects-border-only-guard",
+      "passed": false,
+      "evidence": "Uses Math.round + prev-equality to avoid loops and gates UI on height!=null, but no border-only rejection predicate; would still commit ~2px."
+    },
+    {
+      "text": "handles-content-readiness",
+      "passed": true,
+      "evidence": "Covers font swap, image decode, aspect-ratio, preload."
+    },
+    {
+      "text": "abandons-oneshot-mount",
+      "passed": true,
+      "evidence": "'In no case keep the one-shot useLayoutEffect([])'."
+    },
+    {
+      "text": "prefers-css-first",
+      "passed": true,
+      "evidence": "Fix A (preferred): 'dont measure at all - anchor the badge' with position:relative/absolute; delete measuring code."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8333333333333334,
+    "passed": 5,
+    "failed": 1,
+    "total": 6
+  }
+}

@@ -1,0 +1,31 @@
+# Normalize text files.
+* text=auto eol=lf
+
+*.md text diff=markdown
+*.txt text
+*.json text
+*.yaml text
+*.yml text
+*.toml text
+*.js text
+*.ts text
+*.mts text
+*.css text
+*.html text
+
+# Store binary evaluation artifacts in Git LFS.
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+*.avif filter=lfs diff=lfs merge=lfs -text
+
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+
+pnpm-lock.yaml linguist-generated

@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "measures-without-height-zero",
+      "passed": true,
+      "evidence": "Measures inner wrapper left at height:auto; 'Never measure the element youre constraining'; container clips."
+    },
+    {
+      "text": "resizeobserver-changing-content",
+      "passed": true,
+      "evidence": "RO on inner wrapper re-fires on font swap, reflow, async child."
+    },
+    {
+      "text": "animate-px-then-auto",
+      "passed": true,
+      "evidence": "Animates 0<->measured px; deliberate non-choice section explains keeping px-pinned + RO vs switching to auto after transition."
+    },
+    {
+      "text": "correct-measure-timing",
+      "passed": true,
+      "evidence": "useIsoLayoutEffect; Math.ceil to avoid cropping last line; borderBoxSize."
+    },
+    {
+      "text": "establishes-bfc-for-margins",
+      "passed": true,
+      "evidence": "contentProps style display:flow-root with explicit margin-collapse explanation; also table row 'Margins on first/last child'."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

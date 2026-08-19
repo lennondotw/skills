@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "identifies-body-context-loss: body-append drops vars/theme classes/container ancestry",
+      "passed": true,
+      "evidence": "Sections 1-2 cover lost container queries and inherited custom properties; compact density driven by variable overrides."
+    },
+    {
+      "text": "explains-container-query-break: container queries resolve against absent/wrong container off-body",
+      "passed": true,
+      "evidence": "Section 1 explains @container resolves against nearest container ancestor, none under body -> default branch, shorter box."
+    },
+    {
+      "text": "recommends-in-place-or-subtree: measure in place / probe inside real subtree / reproduce container+width",
+      "passed": true,
+      "evidence": "Strategy A reproduces container chain (mount inside theme root); Strategy B measures real rows on mount + cache."
+    },
+    {
+      "text": "fixes-inline-size: measure at real inline size (height is function of width)",
+      "passed": true,
+      "evidence": "Section 3 'Width is unconstrained'; setWidth pins container to real content width."
+    },
+    {
+      "text": "warns-copy-computed: dont snapshot getComputedStyle; replicate ancestors",
+      "passed": true,
+      "evidence": "Advocates replicating ancestors (clone container chain, carry classes/data-* attrs) rather than snapshotting styles; does not use getComputedStyle copy. (Weaker: never explicitly names the getComputedStyle-freeze pitfall.)"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

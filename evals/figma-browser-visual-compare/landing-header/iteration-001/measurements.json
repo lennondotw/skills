@@ -1,0 +1,1293 @@
+{
+  "browser": {
+    "soft-gradient-pill-tab": {
+      "browserClip": {
+        "height": 34,
+        "width": 109,
+        "x": 40,
+        "y": 40
+      },
+      "devicePixelRatio": 4,
+      "hierarchy": {
+        "ancestorChain": [
+          {
+            "ariaLabel": null,
+            "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+            "dataAttributes": {
+              "data-landing-header-active-nav-tab": "true"
+            },
+            "rect": {
+              "height": 34,
+              "width": 109,
+              "x": 40,
+              "y": 40
+            },
+            "role": null,
+            "tagName": "div",
+            "text": "Use Cases",
+            "children": []
+          },
+          {
+            "ariaLabel": null,
+            "className": "p-10",
+            "dataAttributes": {},
+            "rect": {
+              "height": 114,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+                "dataAttributes": {
+                  "data-landing-header-active-nav-tab": "true"
+                },
+                "rect": {
+                  "height": 34,
+                  "width": 109,
+                  "x": 40,
+                  "y": 40
+                },
+                "role": null,
+                "tagName": "div",
+                "text": "Use Cases",
+                "children": []
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "p-10",
+                "dataAttributes": {},
+                "rect": {
+                  "height": 114,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+                    "dataAttributes": {
+                      "data-landing-header-active-nav-tab": "true"
+                    },
+                    "rect": {
+                      "height": 34,
+                      "width": 109,
+                      "x": 40,
+                      "y": 40
+                    },
+                    "role": null,
+                    "tagName": "div",
+                    "text": "Use Cases",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": null,
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+                "dataAttributes": {},
+                "rect": {
+                  "height": 1000,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "p-10",
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 114,
+                      "width": 1440,
+                      "x": 0,
+                      "y": 0
+                    },
+                    "role": null,
+                    "tagName": "div",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+                        "dataAttributes": {
+                          "data-landing-header-active-nav-tab": "true"
+                        },
+                        "rect": {
+                          "height": 34,
+                          "width": 109,
+                          "x": 40,
+                          "y": 40
+                        },
+                        "role": null,
+                        "tagName": "div",
+                        "text": "Use Cases",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": null,
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": null,
+                "dataAttributes": {},
+                "rect": {
+                  "height": 1000,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 1000,
+                      "width": 1440,
+                      "x": 0,
+                      "y": 0
+                    },
+                    "role": null,
+                    "tagName": "div",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": "p-10",
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 114,
+                          "width": 1440,
+                          "x": 0,
+                          "y": 0
+                        },
+                        "role": null,
+                        "tagName": "div",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+                            "dataAttributes": {
+                              "data-landing-header-active-nav-tab": "true"
+                            },
+                            "rect": {
+                              "height": 34,
+                              "width": 109,
+                              "x": 40,
+                              "y": 40
+                            },
+                            "role": null,
+                            "tagName": "div",
+                            "text": "Use Cases",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "headerTree": null,
+        "target": {
+          "ariaLabel": null,
+          "className": "flex h-8.5 w-27.25 items-center justify-center rounded-[28px] px-3 py-1.5 font-sans text-[18px]/[21.6px] font-normal tracking-normal whitespace-nowrap text-black/80 outline-1 -outline-offset-1 outline-black/5",
+          "dataAttributes": {
+            "data-landing-header-active-nav-tab": "true"
+          },
+          "rect": {
+            "height": 34,
+            "width": 109,
+            "x": 40,
+            "y": 40
+          },
+          "role": null,
+          "tagName": "div",
+          "text": "Use Cases",
+          "children": []
+        }
+      },
+      "scrollY": 0,
+      "selector": "[data-landing-header-active-nav-tab]",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    "gradient-stroke-pill-button": {
+      "browserClip": {
+        "height": 36,
+        "width": 79,
+        "x": 40,
+        "y": 40
+      },
+      "devicePixelRatio": 4,
+      "hierarchy": {
+        "ancestorChain": [
+          {
+            "ariaLabel": null,
+            "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+            "dataAttributes": {
+              "data-landing-header-login": "true"
+            },
+            "rect": {
+              "height": 36,
+              "width": 79,
+              "x": 40,
+              "y": 40
+            },
+            "role": null,
+            "tagName": "button",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+                "dataAttributes": {},
+                "rect": {
+                  "height": 38,
+                  "width": 81,
+                  "x": 39,
+                  "y": 39
+                },
+                "role": null,
+                "tagName": "svg",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": null,
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 0,
+                      "width": 0,
+                      "x": 0,
+                      "y": 0
+                    },
+                    "role": null,
+                    "tagName": "defs",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": null,
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 0,
+                          "width": 0,
+                          "x": 0,
+                          "y": 0
+                        },
+                        "role": null,
+                        "tagName": "lineargradient",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": null,
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 0,
+                              "width": 0,
+                              "x": 0,
+                              "y": 0
+                            },
+                            "role": null,
+                            "tagName": "stop",
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "ariaLabel": null,
+                            "className": null,
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 0,
+                              "width": 0,
+                              "x": 0,
+                              "y": 0
+                            },
+                            "role": null,
+                            "tagName": "stop",
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "ariaLabel": null,
+                    "className": null,
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 36,
+                      "width": 79,
+                      "x": 40,
+                      "y": 40
+                    },
+                    "role": null,
+                    "tagName": "rect",
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "ariaLabel": null,
+                "className": "relative block leading-6",
+                "dataAttributes": {
+                  "data-landing-header-login-text": "true"
+                },
+                "rect": {
+                  "height": 24,
+                  "width": 43.859375,
+                  "x": 57.5625,
+                  "y": 46
+                },
+                "role": null,
+                "tagName": "span",
+                "text": "Log in",
+                "children": []
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": "p-10",
+            "dataAttributes": {},
+            "rect": {
+              "height": 116,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+                "dataAttributes": {
+                  "data-landing-header-login": "true"
+                },
+                "rect": {
+                  "height": 36,
+                  "width": 79,
+                  "x": 40,
+                  "y": 40
+                },
+                "role": null,
+                "tagName": "button",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 38,
+                      "width": 81,
+                      "x": 39,
+                      "y": 39
+                    },
+                    "role": null,
+                    "tagName": "svg",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": null,
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 0,
+                          "width": 0,
+                          "x": 0,
+                          "y": 0
+                        },
+                        "role": null,
+                        "tagName": "defs",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": null,
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 0,
+                              "width": 0,
+                              "x": 0,
+                              "y": 0
+                            },
+                            "role": null,
+                            "tagName": "lineargradient",
+                            "children": [
+                              {
+                                "ariaLabel": null,
+                                "className": null,
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 0,
+                                  "width": 0,
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "role": null,
+                                "tagName": "stop",
+                                "text": "",
+                                "children": []
+                              },
+                              {
+                                "ariaLabel": null,
+                                "className": null,
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 0,
+                                  "width": 0,
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "role": null,
+                                "tagName": "stop",
+                                "text": "",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "ariaLabel": null,
+                        "className": null,
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 36,
+                          "width": 79,
+                          "x": 40,
+                          "y": 40
+                        },
+                        "role": null,
+                        "tagName": "rect",
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "ariaLabel": null,
+                    "className": "relative block leading-6",
+                    "dataAttributes": {
+                      "data-landing-header-login-text": "true"
+                    },
+                    "rect": {
+                      "height": 24,
+                      "width": 43.859375,
+                      "x": 57.5625,
+                      "y": 46
+                    },
+                    "role": null,
+                    "tagName": "span",
+                    "text": "Log in",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "p-10",
+                "dataAttributes": {},
+                "rect": {
+                  "height": 116,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+                    "dataAttributes": {
+                      "data-landing-header-login": "true"
+                    },
+                    "rect": {
+                      "height": 36,
+                      "width": 79,
+                      "x": 40,
+                      "y": 40
+                    },
+                    "role": null,
+                    "tagName": "button",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 38,
+                          "width": 81,
+                          "x": 39,
+                          "y": 39
+                        },
+                        "role": null,
+                        "tagName": "svg",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": null,
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 0,
+                              "width": 0,
+                              "x": 0,
+                              "y": 0
+                            },
+                            "role": null,
+                            "tagName": "defs",
+                            "children": [
+                              {
+                                "ariaLabel": null,
+                                "className": null,
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 0,
+                                  "width": 0,
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "role": null,
+                                "tagName": "lineargradient",
+                                "children": [
+                                  null,
+                                  null
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "ariaLabel": null,
+                            "className": null,
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 36,
+                              "width": 79,
+                              "x": 40,
+                              "y": 40
+                            },
+                            "role": null,
+                            "tagName": "rect",
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "ariaLabel": null,
+                        "className": "relative block leading-6",
+                        "dataAttributes": {
+                          "data-landing-header-login-text": "true"
+                        },
+                        "rect": {
+                          "height": 24,
+                          "width": 43.859375,
+                          "x": 57.5625,
+                          "y": 46
+                        },
+                        "role": null,
+                        "tagName": "span",
+                        "text": "Log in",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": null,
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+                "dataAttributes": {},
+                "rect": {
+                  "height": 1000,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "p-10",
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 116,
+                      "width": 1440,
+                      "x": 0,
+                      "y": 0
+                    },
+                    "role": null,
+                    "tagName": "div",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+                        "dataAttributes": {
+                          "data-landing-header-login": "true"
+                        },
+                        "rect": {
+                          "height": 36,
+                          "width": 79,
+                          "x": 40,
+                          "y": 40
+                        },
+                        "role": null,
+                        "tagName": "button",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+                            "dataAttributes": {},
+                            "rect": {
+                              "height": 38,
+                              "width": 81,
+                              "x": 39,
+                              "y": 39
+                            },
+                            "role": null,
+                            "tagName": "svg",
+                            "children": [
+                              {
+                                "ariaLabel": null,
+                                "className": null,
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 0,
+                                  "width": 0,
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "role": null,
+                                "tagName": "defs",
+                                "children": [
+                                  null
+                                ]
+                              },
+                              {
+                                "ariaLabel": null,
+                                "className": null,
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 36,
+                                  "width": 79,
+                                  "x": 40,
+                                  "y": 40
+                                },
+                                "role": null,
+                                "tagName": "rect",
+                                "text": "",
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "ariaLabel": null,
+                            "className": "relative block leading-6",
+                            "dataAttributes": {
+                              "data-landing-header-login-text": "true"
+                            },
+                            "rect": {
+                              "height": 24,
+                              "width": 43.859375,
+                              "x": 57.5625,
+                              "y": 46
+                            },
+                            "role": null,
+                            "tagName": "span",
+                            "text": "Log in",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ariaLabel": null,
+            "className": null,
+            "dataAttributes": {},
+            "rect": {
+              "height": 1000,
+              "width": 1440,
+              "x": 0,
+              "y": 0
+            },
+            "role": null,
+            "tagName": "div",
+            "children": [
+              {
+                "ariaLabel": null,
+                "className": null,
+                "dataAttributes": {},
+                "rect": {
+                  "height": 1000,
+                  "width": 1440,
+                  "x": 0,
+                  "y": 0
+                },
+                "role": null,
+                "tagName": "div",
+                "children": [
+                  {
+                    "ariaLabel": null,
+                    "className": "min-h-screen bg-[#f5f5f5] text-neutral-950",
+                    "dataAttributes": {},
+                    "rect": {
+                      "height": 1000,
+                      "width": 1440,
+                      "x": 0,
+                      "y": 0
+                    },
+                    "role": null,
+                    "tagName": "div",
+                    "children": [
+                      {
+                        "ariaLabel": null,
+                        "className": "p-10",
+                        "dataAttributes": {},
+                        "rect": {
+                          "height": 116,
+                          "width": 1440,
+                          "x": 0,
+                          "y": 0
+                        },
+                        "role": null,
+                        "tagName": "div",
+                        "children": [
+                          {
+                            "ariaLabel": null,
+                            "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+                            "dataAttributes": {
+                              "data-landing-header-login": "true"
+                            },
+                            "rect": {
+                              "height": 36,
+                              "width": 79,
+                              "x": 40,
+                              "y": 40
+                            },
+                            "role": null,
+                            "tagName": "button",
+                            "children": [
+                              {
+                                "ariaLabel": null,
+                                "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+                                "dataAttributes": {},
+                                "rect": {
+                                  "height": 38,
+                                  "width": 81,
+                                  "x": 39,
+                                  "y": 39
+                                },
+                                "role": null,
+                                "tagName": "svg",
+                                "children": [
+                                  null,
+                                  null
+                                ]
+                              },
+                              {
+                                "ariaLabel": null,
+                                "className": "relative block leading-6",
+                                "dataAttributes": {
+                                  "data-landing-header-login-text": "true"
+                                },
+                                "rect": {
+                                  "height": 24,
+                                  "width": 43.859375,
+                                  "x": 57.5625,
+                                  "y": 46
+                                },
+                                "role": null,
+                                "tagName": "span",
+                                "text": "Log in",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "headerTree": null,
+        "target": {
+          "ariaLabel": null,
+          "className": "relative flex h-9 w-19.75 shrink-0 items-center justify-center overflow-hidden rounded-[777px] px-4 text-center font-sans text-[16px]/6 font-medium whitespace-nowrap text-white",
+          "dataAttributes": {
+            "data-landing-header-login": "true"
+          },
+          "rect": {
+            "height": 36,
+            "width": 79,
+            "x": 40,
+            "y": 40
+          },
+          "role": null,
+          "tagName": "button",
+          "children": [
+            {
+              "ariaLabel": null,
+              "className": "pointer-events-none absolute -inset-px h-9.5 w-20.25",
+              "dataAttributes": {},
+              "rect": {
+                "height": 38,
+                "width": 81,
+                "x": 39,
+                "y": 39
+              },
+              "role": null,
+              "tagName": "svg",
+              "children": [
+                {
+                  "ariaLabel": null,
+                  "className": null,
+                  "dataAttributes": {},
+                  "rect": {
+                    "height": 0,
+                    "width": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "role": null,
+                  "tagName": "defs",
+                  "children": [
+                    {
+                      "ariaLabel": null,
+                      "className": null,
+                      "dataAttributes": {},
+                      "rect": {
+                        "height": 0,
+                        "width": 0,
+                        "x": 0,
+                        "y": 0
+                      },
+                      "role": null,
+                      "tagName": "lineargradient",
+                      "children": [
+                        {
+                          "ariaLabel": null,
+                          "className": null,
+                          "dataAttributes": {},
+                          "rect": {
+                            "height": 0,
+                            "width": 0,
+                            "x": 0,
+                            "y": 0
+                          },
+                          "role": null,
+                          "tagName": "stop",
+                          "text": "",
+                          "children": []
+                        },
+                        {
+                          "ariaLabel": null,
+                          "className": null,
+                          "dataAttributes": {},
+                          "rect": {
+                            "height": 0,
+                            "width": 0,
+                            "x": 0,
+                            "y": 0
+                          },
+                          "role": null,
+                          "tagName": "stop",
+                          "text": "",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ariaLabel": null,
+                  "className": null,
+                  "dataAttributes": {},
+                  "rect": {
+                    "height": 36,
+                    "width": 79,
+                    "x": 40,
+                    "y": 40
+                  },
+                  "role": null,
+                  "tagName": "rect",
+                  "text": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "ariaLabel": null,
+              "className": "relative block leading-6",
+              "dataAttributes": {
+                "data-landing-header-login-text": "true"
+              },
+              "rect": {
+                "height": 24,
+                "width": 43.859375,
+                "x": 57.5625,
+                "y": 46
+              },
+              "role": null,
+              "tagName": "span",
+              "text": "Log in",
+              "children": []
+            }
+          ]
+        }
+      },
+      "scrollY": 0,
+      "selector": "[data-landing-header-login]",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    }
+  },
+  "figma": {
+    "soft-gradient-pill-tab": {
+      "absoluteBoundingBox": {
+        "x": -4460,
+        "y": 3948,
+        "width": 109,
+        "height": 34
+      },
+      "blendMode": "PASS_THROUGH",
+      "children": [
+        {
+          "absoluteBoundingBox": {
+            "x": -4448,
+            "y": 3954,
+            "width": 85,
+            "height": 22
+          },
+          "blendMode": "PASS_THROUGH",
+          "characters": "Use Cases",
+          "children": [],
+          "effects": [],
+          "fills": [
+            {
+              "opacity": 0.800000011920929,
+              "blendMode": "NORMAL",
+              "type": "SOLID",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              },
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:f99282b32ee4b6ecb51e609251d42f7de3e06de8/1970:1"
+                }
+              }
+            }
+          ],
+          "id": "I1058:5053;910:5406",
+          "name": "Proactive",
+          "strokes": [],
+          "type": "TEXT"
+        }
+      ],
+      "effects": [],
+      "fills": [
+        {
+          "opacity": 0.6000000238418579,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:0dc8dee5be39c7dd788bce80b73a3f5cc45a636d/1970:12"
+            }
+          }
+        },
+        {
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "type": "GRADIENT_RADIAL",
+          "gradientHandlePositions": [
+            {
+              "x": 0.4999999999999989,
+              "y": -2.4268429044127515e-8
+            },
+            {
+              "x": 0.5000000485368741,
+              "y": 0.9999999757315685
+            },
+            {
+              "x": -0.6241039846785588,
+              "y": 3.029204642679417e-8
+            }
+          ],
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.8980392217636108,
+                "g": 0.8588235378265381,
+                "b": 0.9647058844566345,
+                "a": 1
+              },
+              "position": 0.44268599152565
+            },
+            {
+              "color": {
+                "r": 0.4470588266849518,
+                "g": 0.7647058963775635,
+                "b": 0.9372549057006836,
+                "a": 1
+              },
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "id": "1058:5053",
+      "layoutMode": "HORIZONTAL",
+      "name": "Frame 1171275133",
+      "strokes": [
+        {
+          "opacity": 0.05000000074505806,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          }
+        }
+      ],
+      "type": "INSTANCE"
+    },
+    "gradient-stroke-pill-button": {
+      "absoluteBoundingBox": {
+        "x": -4024,
+        "y": -1230,
+        "width": 79,
+        "height": 36
+      },
+      "blendMode": "PASS_THROUGH",
+      "children": [
+        {
+          "absoluteBoundingBox": {
+            "x": -4008,
+            "y": -1224,
+            "width": 47,
+            "height": 24
+          },
+          "blendMode": "PASS_THROUGH",
+          "characters": "Log in",
+          "children": [],
+          "effects": [],
+          "fills": [
+            {
+              "blendMode": "NORMAL",
+              "type": "SOLID",
+              "color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              }
+            }
+          ],
+          "id": "I926:977;1312:2084;873:9575",
+          "name": "Log in",
+          "strokes": [],
+          "type": "TEXT"
+        }
+      ],
+      "effects": [],
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "GRADIENT_LINEAR",
+          "gradientHandlePositions": [
+            {
+              "x": 0.5000000432293801,
+              "y": 0.5000000353254135
+            },
+            {
+              "x": 0.8306878846282639,
+              "y": 1.2750000247285436
+            },
+            {
+              "x": 0.10541923757405358,
+              "y": 0.6823379328634013
+            }
+          ],
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.11764705926179886,
+                "g": 0.11764705926179886,
+                "b": 0.11764705926179886,
+                "a": 1
+              },
+              "position": 0
+            },
+            {
+              "color": {
+                "r": 0.42559343576431274,
+                "g": 0.42559343576431274,
+                "b": 0.42559343576431274,
+                "a": 1
+              },
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "id": "I926:977;1312:2084",
+      "layoutMode": "HORIZONTAL",
+      "name": "Frame 1171275214",
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "GRADIENT_LINEAR",
+          "gradientHandlePositions": [
+            {
+              "x": 0.2777777970110772,
+              "y": 0.40000002329833745
+            },
+            {
+              "x": 0.07407407333388905,
+              "y": -0.03750005122317035
+            },
+            {
+              "x": 0.5133292170010916,
+              "y": 0.2584358444467053
+            }
+          ],
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.2773061990737915,
+                "g": 0.2773061990737915,
+                "b": 0.2773061990737915,
+                "a": 1
+              },
+              "position": 0
+            },
+            {
+              "color": {
+                "r": 0.9984036684036255,
+                "g": 0.9984036684036255,
+                "b": 0.9984036684036255,
+                "a": 1
+              },
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "type": "INSTANCE"
+    }
+  }
+}

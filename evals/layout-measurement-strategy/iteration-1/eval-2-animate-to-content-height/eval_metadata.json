@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "animate-to-content-height",
+  "prompt": "Write a React + TypeScript hook `useAutoHeight` for an expand/collapse panel: when open, the container animates its height from 0 to the natural height of its children, and back to 0 when closed. It needs to handle children whose height can change while open (text that reflows on resize, async content that loads in later). Give me the hook plus the minimal CSS. Keep it robust — I've been bitten before by the height being measured wrong.",
+  "assertions": [
+    {"name": "measures-without-height-zero", "text": "Measures the natural/content height without reading it off the element that is constrained to height:0 (e.g. measures an inner auto-height wrapper or scrollHeight), not the collapsed animating element itself."},
+    {"name": "resizeobserver-changing-content", "text": "Uses a ResizeObserver so the target height updates when children reflow or async content loads while the panel is open."},
+    {"name": "animate-px-then-auto", "text": "Handles the height:auto animation problem correctly — animates to a measured pixel height, and accounts for setting height back to auto after the transition (so later content growth isn't clipped)."},
+    {"name": "correct-measure-timing", "text": "Uses correct measurement timing (useLayoutEffect / rAF / ResizeObserver) rather than a naive useEffect that flashes, and/or rounds up (Math.ceil) to avoid clipping the last line."}
+  ]
+}

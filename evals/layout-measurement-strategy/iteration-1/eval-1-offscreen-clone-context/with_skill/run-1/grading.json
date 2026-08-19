@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "identifies-body-context-loss: body-append drops vars/theme classes/container ancestry",
+      "passed": true,
+      "evidence": "Lists lost custom properties, ancestor classes ([data-density], .dark), container-query context on document.body."
+    },
+    {
+      "text": "explains-container-query-break: container queries resolve against absent/wrong container off-body",
+      "passed": true,
+      "evidence": "Explains @container rules fail to match with no query container ancestor, flipping to default branch."
+    },
+    {
+      "text": "recommends-in-place-or-subtree: measure in place / probe inside real subtree / reproduce container+width",
+      "passed": true,
+      "evidence": "Best option = measure real rows in place with RO + cache; off-flow probe must mount inside real container subtree."
+    },
+    {
+      "text": "fixes-inline-size: measure at real inline size (height is function of width)",
+      "passed": true,
+      "evidence": "'Pin the real inline size'; notes unconstrained absolute clone has wrong width -> wrong wrapping."
+    },
+    {
+      "text": "warns-copy-computed: dont snapshot getComputedStyle; replicate ancestors",
+      "passed": true,
+      "evidence": "'Do NOT clone getComputedStyle onto the probe. That freezes %/em/ch/fit-content and kills container queries.'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

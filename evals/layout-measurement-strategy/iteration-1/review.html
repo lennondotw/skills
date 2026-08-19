@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "layout-measurement-strategy", "runs": [{"id": "eval-0-collapsed-tile-badge-with_skill", "prompt": "We have a widget preview in our design tool. Each widget renders inside a host \"chrome\" wrapper (a div with border + padding), and the widget body inside it is auto-height. A Stage badge is absolutely positioned in the top-right corner of each tile, and we place it using the tile's measured height. Bug: on first render some tiles collapse to about 2px tall and the badge sits in the wrong place overlapping the border; a moment later the tile jumps to its full height and the badge looks fine. The tile body streams its content in asynchronously and can contain web-font text and images. Here's our measuring code:\n\n```tsx\nuseLayoutEffect(() => {\n  const h = tileRef.current!.offsetHeight;\n  setTileHeight(h);\n}, []);\n```\n\nWhy is this happening, and how do we fix it robustly?", "eval_id": 0, "outputs": [{"name": "answer.md", "type": "text", "content": "# Collapsed tile \u2192 misplaced Stage badge\n\n## TL;DR\n\nYour `useLayoutEffect(\u2026, [])` measures the tile **exactly once, on the first commit \u2014 before the tile has any content in it**. At that instant the auto-height body is empty (content streams in later, fonts haven't swapped, images haven't loaded), so the tile is only as tall as the chrome's `border-top + border-bottom` \u2014 the classic **border-only measurement** of ~2px. You then commit that 2px into `tileHeight` and position the badge against a ~0-height box, so it collides with the border. When the streamed content finally arrives the real DOM tile grows to full height on its own, and the badge *looks* fixed only because some later re-render happened to re-run past your measurement \u2014 which is luck, not correctness.\n\nThe robust fix is two cooperating halves: **observe until the size settles** (don't measure at a single guessed instant), and **refuse to commit a border-only number** (a validity predicate, not just a value).\n\n---\n\n## Diagnosis\n\n### Why the number is wrong, not just early\n\nA layout size is not a stable property you can read whenever you like. Auto **height is a function of** the content that's present and the width it's resolved against. Your code reads that function at the one moment it is guaranteed to be wrong:\n\n1. **`useLayoutEffect(\u2026, [])` fires once, right after the first commit.** The tile body \"streams its content in asynchronously,\" so on that first commit the body is empty or nearly empty. There is nothing inside to give it height.\n2. **The tile is an auto-height body inside a chrome wrapper.** With no content contribution, its border box collapses to just the chrome's vertical border (and any padding that isn't collapsed) \u2014 roughly 2px. `offsetHeight` faithfully reports that 2px. The browser gives you no signal that this layout is provisional; a plausible-but-wrong number comes back **silently**, and you commit it.\n3. **Web fonts and images make it worse.** Even if some text were present on first commit, fallback-font metrics and not-yet-decoded images give shorter, provisional line boxes. The height keeps changing after your one read.\n4. **The empty dependency array means you never look again.** The visible \"jump to full height\" is the real DOM tile growing as content arrives \u2014 that happens regardless of your state. But `tileHeight` stays pinned at 2px until something *else* triggers a re-render that happens to re-run your effect's logic. That's why it \"sometimes\" self-heals a moment later: it's a race, and the outcome is non-deterministic (it'll flip with StrictMode, with how the parent re-renders on each stream chunk, with timing on a fast vs slow machine).\n\nThis is precisely the border-only failure mode: *a content-bearing element measuring to ~chrome height means layout hasn't happened yet, not that the height is 0.*\n\n### Why \"measure at the right instant\" can't be the fix\n\nThere is no right instant to guess. Content arrives late and in stages \u2014 first paint, then font swap, then each stream chunk, then each image decode. Any fixed moment (`useLayoutEffect[]`, a `setTimeout`, even a double-`rAF`) either fires before the content or lands in the middle of it. You have to stop guessing an instant and instead **subscribe to the changes and take the settled value.**\n\n---\n\n## The fix\n\nTwo halves, both required:\n\n- **Producer \u2014 observe, don't snapshot.** Use a `ResizeObserver`. It fires after layout and before paint, and **re-fires on every reflow** \u2014 first layout, font swap, image load, each stream chunk. It converts \"is the geometry final?\" from a guess into an event. Take the value when it has *settled* (unchanged across two consecutive deliveries).\n- **Consumer \u2014 reject border-only.** Even a good producer can hand you an early collapsed value. Guard it: refuse any height whose content contribution over the chrome is \u2264 ~1px, refuse a non-positive height, and refuse an implausible collapse versus the last good value. Commit only a height that **passes the predicate**.\n\nMeasure the tile **in place** \u2014 do not move it to a probe or `document.body`. In-place measurement replicates nothing because nothing moved: it keeps the containing block, the formatting context, the chrome's border/padding, inherited custom properties, container-query ancestry, and any shadow stylesheets. Off-flow probing here would only reintroduce bugs.\n\n### The validity predicate\n\n```ts\n// The chrome's own vertical border+padding. Measure it once from the wrapper,\n// or pass in a known constant. This is the height the tile collapses TO when\n// it has no content \u2014 anything at/below it means \"layout hasn't happened yet.\"\nfunction isTrustworthy(borderBoxH: number, chromeH: number, prev?: number): boolean {\n  if (!Number.isFinite(borderBoxH) || borderBoxH <= 0) return false; // no box / display:none\n  if (borderBoxH - chromeH <= 1) return false;                       // border-only collapse\n  if (prev != null && borderBoxH < prev * 0.25) return false;        // implausible collapse\n  return true;\n}\n```\n\n### The hook\n\n```tsx\nimport { useLayoutEffect, useRef, useState } from \"react\";\n\n/**\n * Measures an auto-height element's settled border-box height in place.\n * - Observes with ResizeObserver, so it catches the async stream, font swap,\n *   and image loads instead of guessing one instant.\n * - Rejects border-only / collapsed reads so the badge never positions against\n *   a ~2px box.\n * - Commits only when the value is trustworthy AND stable across two RO\n *   deliveries (the practical \"settled\" signal), then keeps watching in case\n *   the tile genuinely resizes later.\n *\n * @param chromeH  the wrapper's vertical border + padding (the height the tile\n *                 collapses to with no content). Pass a constant or measure it.\n */\nexport function useSettledTileHeight<T extends HTMLElement>(chromeH: number) {\n  const ref = useRef<T | null>(null);\n  const [height, setHeight] = useState<number | null>(null); // null = not measured yet\n\n  useLayoutEffect(() => {\n    const el = ref.current;\n    if (!el) return;\n\n    let committed: number | undefined;   // last value we accepted\n    let pending: number | undefined;     // candidate seen once, awaiting confirmation\n    let disposed = false;\n\n    const consider = (raw: number) => {\n      // border-box height, rounded up so we never crop the last text line.\n      const h = Math.ceil(raw);\n      if (!isTrustworthy(h, chromeH, committed)) return; // refuse collapsed numbers\n\n      if (pending != null && Math.abs(pending - h) <= 1) {\n        // stable across two deliveries -> settled. Commit.\n        committed = h;\n        pending = undefined;\n        setHeight(h);\n      } else {\n        pending = h; // first sighting of a plausible value; wait for confirmation\n      }\n    };\n\n    const ro = new ResizeObserver((entries) => {\n      const entry = entries[0];\n      // borderBoxSize is the modern, reflow-free read; fall back to contentRect+chrome.\n      const box = entry.borderBoxSize?.[0];\n      const raw = box ? box.blockSize : el.offsetHeight;\n      consider(raw);\n    });\n    ro.observe(el);\n\n    // Web-font swaps change line-box height after first layout. RO already\n    // catches this, but nudging on fonts.ready makes slow-font machines settle\n    // deterministically rather than waiting for the next unrelated reflow.\n    document.fonts?.ready.then(() => {\n      if (!disposed && ref.current) consider(ref.current.offsetHeight);\n    });\n\n    return () => {\n      disposed = true;\n      ro.disconnect();\n    };\n  }, [chromeH]);\n\n  return { ref, height };\n}\n```\n\n### Using it \u2014 the consumer refuses to place the badge early\n\n```tsx\nfunction WidgetTile({ stage, children }: Props) {\n  // chromeH = the wrapper's border+padding, e.g. 2px top + 2px bottom border = 4.\n  // Better: read it once from getComputedStyle, or expose it as a CSS constant.\n  const { ref, height } = useSettledTileHeight<HTMLDivElement>(/* chromeH */ 4);\n\n  return (\n    <div className=\"chrome\" style={{ position: \"relative\" }}>\n      {/* Only render the badge once we have a trustworthy height. Until then it\n          simply isn't placed \u2014 no flash of a badge sitting on the border. */}\n      {height != null && (\n        <StageBadge\n          stage={stage}\n          style={{ position: \"absolute\", top: 8, right: 8 /* or derive from `height` */ }}\n        />\n      )}\n      <div className=\"tile-body\" ref={ref}>\n        {children /* streams in asynchronously; RO tracks every growth step */}\n      </div>\n    </div>\n  );\n}\n```\n\nIf the badge's position is genuinely derived from the measured height (e.g. vertically centered against it), use `height` in the style and gate on `height != null` so it never renders against the collapsed box. If the badge only needs to sit in the top-right corner, you may not need the measured height for placement at all \u2014 but you still want the guard so nothing downstream (radii, insets, animations) consumes the 2px value.\n\n---\n\n## Why each piece matters\n\n- **`ResizeObserver` instead of a one-shot read** \u2014 the content is async in *stages* (stream chunks, font swap, image decode). RO re-fires on each, so you converge on the real height instead of betting on one instant that's guaranteed to be too early. It also hands you the value without forcing a synchronous reflow.\n- **Reject-border-only guard** \u2014 this is what actually kills your bug. Waiting isn't enough on its own, because an eager first RO delivery (or your old `useLayoutEffect`) will still hand over the collapsed 2px. The predicate refuses to commit it: *border-box \u2212 chrome \u2264 1px \u21d2 \"not measured,\" not \"height is 0.\"*\n- **Settle-across-two-deliveries** \u2014 RO fires on every reflow, so a single delivery isn't proof the layout is final. Two consecutive equal (\u00b11px) deliveries is the practical \"settled\" signal.\n- **Measure in place, not off-flow** \u2014 nothing moves, so the chrome's border/padding, the containing block, fonts, custom properties, and container-query context are all exactly the real ones. Appending a probe to `document.body` would silently drop custom properties, ancestor classes (`.dark`, `[data-density]`), `@container` context, and shadow `adoptedStyleSheets`, and you'd measure a different element than you render.\n- **`Math.ceil`** \u2014 feeding a rounded-*down* height back into layout crops the last line of text. Round up for any box that must not clip. Keep one box type end-to-end: `offsetHeight` / `borderBoxSize.blockSize` are both border-box, which matches how you position the absolute badge.\n- **`useLayoutEffect` (not `useEffect`) to install the observer** \u2014 so the badge is placed after commit but before paint, with no flash of the un-sized state. But note: the *decision to place* now waits for `height != null`, not for a single measurement instant.\n- **`document.fonts.ready` nudge** \u2014 RO already catches font swaps, but on slow-font machines this makes the tile settle deterministically instead of waiting for the next unrelated reflow.\n\n## Pre-trust checklist (applied here)\n\n- [x] Has a layout box \u2014 measured in place, not `display: none`.\n- [x] Real inline size / context \u2014 in place, so chrome border/padding, fonts, vars, container queries are all real.\n- [x] Content is real \u2014 RO takes the *settled* value across stream chunks + font swap + image decode.\n- [x] Right box + deliberate rounding \u2014 border-box throughout, `Math.ceil`.\n- [x] No transform contaminating the read \u2014 `offsetHeight` / `borderBoxSize` ignore transforms.\n- [x] Passed the reject-border-only guard.\n- [x] No RO feedback loop \u2014 the callback doesn't resize the observed element; it only sets React state after the value settles.\n"}], "grading": null}, {"id": "eval-0-collapsed-tile-badge-without_skill", "prompt": "We have a widget preview in our design tool. Each widget renders inside a host \"chrome\" wrapper (a div with border + padding), and the widget body inside it is auto-height. A Stage badge is absolutely positioned in the top-right corner of each tile, and we place it using the tile's measured height. Bug: on first render some tiles collapse to about 2px tall and the badge sits in the wrong place overlapping the border; a moment later the tile jumps to its full height and the badge looks fine. The tile body streams its content in asynchronously and can contain web-font text and images. Here's our measuring code:\n\n```tsx\nuseLayoutEffect(() => {\n  const h = tileRef.current!.offsetHeight;\n  setTileHeight(h);\n}, []);\n```\n\nWhy is this happening, and how do we fix it robustly?", "eval_id": 0, "outputs": [{"name": "answer.md", "type": "text", "content": "# Collapsed tile + misplaced badge: why it happens and how to fix it\n\n## Diagnosis\n\nYour measurement is a **one-shot snapshot taken too early**. The bug is not really about `offsetHeight` being wrong \u2014 at the moment you read it, the tile genuinely *is* ~2px tall. You're reading a real height, just at the wrong time.\n\nWalk through the actual timeline:\n\n1. React commits the first render. The tile body has **no content yet** (it streams in asynchronously). So the body's content box is 0px high, and the \"2px\" you see is just the chrome wrapper's top+bottom border (a 1px border on each side).\n2. `useLayoutEffect(fn, [])` fires **once**, synchronously after that first commit, before paint. You read `offsetHeight` \u2192 ~2px \u2192 `setTileHeight(2)`.\n3. The absolutely-positioned Stage badge is placed using `tileHeight = 2`, so it lands on top of the border. That's the broken first frame.\n4. Later, three independent async things happen, each of which changes the height *after* your effect already ran and will never run again:\n   - The streamed content arrives and gets inserted into the body.\n   - **Web fonts** finish loading and the text reflows to its final line count (FOUT/FOIT \u2014 text is invisible or falls back, then swaps, changing height).\n   - **Images** decode and get their intrinsic height (any `<img>` without a reserved height reflows the layout when it loads).\n5. Each of those triggers a browser reflow, the tile jumps to full height \u2014 but your `tileHeight` state is still `2`. The reason it \"looks fine a moment later\" is almost certainly that *some other* re-render (new props, another state update, streaming causing a parent re-render) happens to re-run your layout logic or re-mount, and by then the content is settled.\n\nSo the two root causes are:\n\n- **`[]` dependency array** \u2014 you measure exactly once, at the emptiest possible moment, and never again. `useLayoutEffect` runs after commit, but layout is not \"final\" just because React committed. Async content, fonts, and images all mutate layout later.\n- **Deriving an absolute position from a JS-measured height at all.** Even with perfect timing, coupling the badge's position to a state value means every height change requires a re-measure + re-render round trip. It will always lag by at least one frame.\n\nA secondary point: `offsetHeight` is an integer (rounded). If precise placement matters, `getBoundingClientRect().height` gives you the fractional value.\n\n## The robust fix\n\nTwo layers. First, **prefer CSS so you don't need to measure at all**. Second, if you genuinely need the number in JS, **measure continuously with `ResizeObserver`** instead of once.\n\n### Layer 1 (best): position the badge with CSS, drop the measurement\n\nIf the badge is in the top-right corner, it doesn't actually need the tile's height \u2014 `top`/`right` on an absolutely-positioned element are relative to the positioned ancestor's padding box, not its height. Make the chrome wrapper the positioning context and place the badge directly:\n\n```tsx\nfunction Tile({ children }: { children: React.ReactNode }) {\n  return (\n    // position: relative makes this the containing block for the badge.\n    // No height measurement needed at all.\n    <div className=\"tile-chrome\">\n      <StageBadge className=\"tile-badge\" />\n      <div className=\"tile-body\">{children}</div>\n    </div>\n  );\n}\n```\n\n```css\n.tile-chrome {\n  position: relative;      /* containing block for the badge */\n  border: 1px solid var(--border);\n  padding: 12px;\n}\n\n.tile-badge {\n  position: absolute;\n  top: 8px;                /* offset from the top border, not from measured height */\n  right: 8px;\n  z-index: 1;\n}\n\n.tile-body {\n  /* auto height \u2014 grows with streamed content */\n}\n```\n\nThis is immune to the entire class of bug: there is no first-frame snapshot, no font/image race, no re-render lag. The badge is pinned to the corner by the layout engine, which already knows the correct box on every frame including reflows. **If your design allows it, stop here** \u2014 you almost never need JS to put something in a corner.\n\n### Layer 2: if you truly need the measured height in JS\n\nSometimes you legitimately need the number (e.g. to size a sibling, drive a tooltip, report telemetry, or the badge position is a function of height for a non-trivial reason). Then measure it *continuously*, not once:\n\n```tsx\nimport { useState, useLayoutEffect, useRef } from \"react\";\n\nfunction useMeasuredHeight<T extends HTMLElement>() {\n  const ref = useRef<T | null>(null);\n  const [height, setHeight] = useState(0);\n\n  useLayoutEffect(() => {\n    const el = ref.current;\n    if (!el) return;\n\n    // Fires on the initial box AND on every subsequent reflow:\n    // streamed content insertion, web-font swap, image decode, resize.\n    const ro = new ResizeObserver((entries) => {\n      const entry = entries[0];\n      // borderBoxSize matches offsetHeight (includes border + padding).\n      const h = entry.borderBoxSize?.[0]?.blockSize ?? el.offsetHeight;\n      setHeight(h);\n    });\n\n    ro.observe(el);\n    return () => ro.disconnect();\n  }, []);\n\n  return [ref, height] as const;\n}\n```\n\n```tsx\nfunction Tile({ children }: { children: React.ReactNode }) {\n  const [tileRef, tileHeight] = useMeasuredHeight<HTMLDivElement>();\n\n  return (\n    <div ref={tileRef} className=\"tile-chrome\" style={{ position: \"relative\" }}>\n      <StageBadge style={{ /* ...derive from tileHeight if you must... */ }} />\n      <div className=\"tile-body\">{children}</div>\n    </div>\n  );\n}\n```\n\nWhy `ResizeObserver` is the correct tool:\n\n- It reports the element's box **on observe** (so you get the initial value) and again **on every reflow** \u2014 including the ones caused by streamed content, the web-font swap, and image decode. Those are exactly the events your `[]` effect misses.\n- It's throttled to the browser's layout cycle (fires just before paint), so you don't need to poll or guess timings.\n- `borderBoxSize.blockSize` corresponds to `offsetHeight` (content + padding + border). Use `contentBoxSize` if you want the inner height instead.\n\n### Things to avoid (common but fragile \"fixes\")\n\n- **`setTimeout(measure, 0)` / `requestAnimationFrame`** \u2014 this just moves the single snapshot slightly later. It'll fix the demo and then break the day a font loads slowly or a big image streams in. It races the network; `ResizeObserver` observes the result.\n- **Awaiting `document.fonts.ready` once** \u2014 helps with the font-swap case only, still misses streamed content and image decode, and still measures once.\n- **Re-running the effect on a `children`/content dependency** \u2014 better than `[]`, but you still won't catch font swap or image load, which don't change any prop.\n\n### Bonus: kill the layout jank at the source\n\nEven with the observer, the tile visibly *jumps* as fonts/images land. Reduce that reflow churn:\n\n- Give `<img>` explicit `width`/`height` (or `aspect-ratio`) so it reserves space before decoding \u2014 no post-load shift.\n- Use `font-display: optional` or `swap` deliberately, and consider preloading the critical web font so the swap happens before/at first paint.\n- Optionally reserve a `min-height` on `.tile-body` while content streams, so the first frame isn't a 2px sliver.\n\n## Summary\n\n- **Why:** `useLayoutEffect(fn, [])` measures exactly once, at the first commit, when the body is empty and fonts/images haven't loaded. The ~2px is the real height at that instant (just the chrome border). Async content, web-font swap, and image decode all grow the tile *after* your effect ran and it never re-measures \u2014 so the badge, positioned from the stale `2`, sits on the border until some unrelated re-render fixes it.\n- **Fix:** Prefer CSS \u2014 make the chrome `position: relative` and pin the badge with `top`/`right`, needing no measurement. If you must have the height in JS, replace the one-shot effect with a `ResizeObserver` that updates on the initial box and every reflow. Pair with reserved image dimensions and a considered `font-display` to remove the visible jump.\n"}], "grading": null}, {"id": "eval-1-offscreen-clone-context-with_skill", "prompt": "I'm building virtualization for a feed. Before rendering a row I need its height so I can position rows. My approach: I clone the row node and append the clone to document.body with `position:absolute; visibility:hidden; height:auto`, then read `getBoundingClientRect().height`. It mostly works, but a bunch of rows come back noticeably shorter than they actually render, and rows in our themed \"compact density\" mode are especially wrong. The real rows live inside a container that uses container queries and CSS custom properties for spacing and font size. What's going wrong, and what should I do instead?", "eval_id": 1, "outputs": [{"name": "answer.md", "type": "text", "content": "# Measuring feed-row height for virtualization: what's going wrong\n\nShort version: your probe measures a **different element than the one you render**, because \"clone and append to `document.body`\" throws away the CSS context that decides the row's height. The heights come back short \u2014 and worst in compact density \u2014 for two compounding reasons:\n\n1. You lost the **CSS custom properties** that drive spacing and font size. On `document.body`, `var(--row-gap)`, `var(--font-size)`, etc. resolve to their initial/fallback values (or nothing), so padding and line height shrink. Compact density is defined *by overriding those same variables*, so a compact row measured on `body` loses the compact overrides too \u2014 but it also loses the *base* values, and you happen to notice compact most because that theme leans hardest on the variables.\n2. You lost the **container query context**. The real rows live inside a `container-type` ancestor; their styles are resolved against that container's inline size via `@container` rules. On `document.body` there is no query container, so every `@container` block silently fails to apply \u2014 fonts, padding, and wrapping all flip to the default branch. Different styles \u2192 different wrapping \u2192 different height.\n\nThere are a couple of other likely contributors:\n\n- **Wrong width.** `position:absolute` with no `width` set makes the clone shrink-to-fit its content instead of taking the row's real content width. A narrower box wraps text onto *more* lines, which would make it taller \u2014 but if any `@container`/media branch keys off width, or the clone ends up *wider* than the real row (absolute boxes can size to viewport-ish widths depending on content), you get fewer lines and a shorter read. Either way the width isn't pinned to the real render width, so wrapping is wrong.\n- **Fonts not ready.** If you measure before web fonts load, the fallback font's metrics give shorter line boxes. This alone can make every row a few px short.\n- **Ancestor classes / attributes gone.** Selectors like `[data-density=\"compact\"] .row`, `.dark .row`, or `:has()` rules on an ancestor don't match once the node is reparented to `body`. Anything themed via a descendant selector reverts.\n\nThe underlying theorem: **a layout size is not a property of an element \u2014 it's the output of a function of (a) the real inline size it's resolved against, (b) the full CSS context its ancestors impose, and (c) whether its content is ready.** Move the node to `body` and you've changed (b) (and probably (a)); measure before fonts load and you've changed (c). The browser never tells you the number is provisional \u2014 it just returns a plausible, confidently-wrong height, and your virtualizer commits it.\n\n## What to do instead\n\n### Best option: measure in place, don't clone off to `body`\n\nFor a virtualized feed the highest-fidelity and usually simplest approach is to **measure the real rows where they actually live** and cache the result. Nothing is reparented, so nothing about the context is replicated wrong \u2014 same containing block, same query container, same inherited custom properties, same theme classes.\n\nThe clean way to do this with a virtualizer is **measure-on-mount with a `ResizeObserver`**, feeding measured heights back into your position map. Render a row (even briefly), observe its real height, cache it keyed by item id, and reuse the cached height for positioning. This also self-corrects when fonts swap, images load, or content streams \u2014 the RO just fires again with the new height.\n\n```ts\n// Height cache keyed by stable item id.\nconst heights = new Map<string, number>();\n\nconst ro = new ResizeObserver((entries) => {\n  let changed = false;\n  for (const entry of entries) {\n    const id = (entry.target as HTMLElement).dataset.itemId!;\n    // border-box block size = the space this row occupies in the column\n    const h = entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height;\n    if (!isTrustworthy(h, getChromeHeight(entry.target as HTMLElement), heights.get(id))) {\n      continue; // reject collapsed / border-only reads; wait for the real one\n    }\n    const prev = heights.get(id);\n    if (prev == null || Math.abs(prev - h) > 0.5) {\n      heights.set(id, Math.ceil(h)); // ceil so the last text line isn't clipped\n      changed = true;\n    }\n  }\n  if (changed) scheduleReflowOfVirtualList(); // recompute offsets from the map\n});\n\n// When a row element mounts:\nfunction observeRow(el: HTMLElement, id: string) {\n  el.dataset.itemId = id;\n  ro.observe(el, { box: \"border-box\" });\n}\n```\n\nNotes:\n- Take `borderBoxSize[0].blockSize`, not `getBoundingClientRect().height`, when you can \u2014 RO hands you the value *without forcing a synchronous reflow*, and it re-fires on every change so you never have to guess the \"right instant\" to read.\n- `Math.ceil` the height before feeding it back into layout; a rounded-down height crops the last line of text.\n- Key the cache by a **stable item id**, not by DOM position, so recycled row nodes don't poison each other's entries.\n\nFor most virtualization libraries this is the \"dynamic measurement\" mode \u2014 e.g. TanStack Virtual's `measureElement`, which is exactly a `ResizeObserver` in place. Prefer that over hand-rolling if you're using a library.\n\n### Let the browser hold the space: `content-visibility`\n\nIf you want the browser to help rather than manage a full offset map yourself, `content-visibility: auto` plus a remembered size lets it skip rendering off-screen rows *and* reserve the right space, self-correcting once a row is measured:\n\n```css\n.feed-row {\n  content-visibility: auto;\n  /* seed with a best-guess row height; browser replaces it with the real\n     measured size once the row has been laid out once */\n  contain-intrinsic-size: auto 120px;\n}\n```\n\nThis is the least-effort path to \"don't pay to render 10k rows, but still position them roughly right.\" You can combine it with the RO cache above for exact offsets.\n\n### If you truly need a synchronous off-flow probe\n\nSometimes you need the height *before* the row ever enters flow (e.g. to compute an initial scroll offset synchronously). Off-flow measurement is the exception, not the default \u2014 and if you do it, you must **replicate the context, not copy computed styles**:\n\n- **Mount the probe *inside the real container subtree*, not on `document.body`.** It needs the same query container, the same ancestor with `[data-density]` / `.dark`, and the same inherited custom properties. A hidden probe slot rendered as a child of the actual feed container gets all of this for free.\n- **Pin the real inline size.** Set the probe's `width` to the row's real content-box width (read it once from a live row or the container). Height is a function of width; if the width is wrong, the wrapping \u2014 and therefore the height \u2014 is wrong.\n- **Keep `height: auto`.** Never `height: 0`. Use `position:absolute; visibility:hidden` (still lays out) so it doesn't affect the visible layout, but keep it in the container's subtree so the cascade and container context still apply.\n- **Do NOT clone `getComputedStyle` onto the probe.** That freezes `%`, `em`, `ch`, and `fit-content` into fixed px and kills container queries \u2014 it re-introduces exactly the bug you have.\n- **Wait for fonts:** `await document.fonts.ready` before trusting the number if the rows use web fonts.\n\n```ts\n// Off-flow probe rendered as a child of the REAL feed container.\nasync function measureRowOffFlow(container: HTMLElement, renderRow: (host: HTMLElement) => void, realWidth: number) {\n  const probe = document.createElement(\"div\");\n  probe.style.cssText = `position:absolute; visibility:hidden; left:-99999px; top:0;\n                         height:auto; width:${realWidth}px;`;\n  container.appendChild(probe);        // <-- inside the container, keeps @container + vars + theme\n  renderRow(probe);\n  await document.fonts.ready;          // fallback metrics give short lines otherwise\n  const h = Math.ceil(probe.getBoundingClientRect().height);\n  container.removeChild(probe);\n  return h;\n}\n```\n\nBut again: for a feed, prefer measure-in-place + cache. It replicates *nothing*, because nothing moved.\n\n## The reject-border-only guard (defensive, cheap, worth it)\n\nWhichever producer you use, protect the *consumer*. Every early-read failure mode collapses the height toward \"chrome only\" (border/padding with no content contribution). A content-bearing row measuring to roughly its border+padding height means **layout hasn't happened yet**, not \"height is 0.\" Refuse to commit such a value:\n\n```ts\nfunction isTrustworthy(borderBoxH: number, chromeH: number, prev?: number): boolean {\n  if (!Number.isFinite(borderBoxH) || borderBoxH <= 0) return false;\n  if (borderBoxH - chromeH <= 1) return false;               // border-only: not measured yet\n  if (prev != null && borderBoxH < prev * 0.25) return false; // implausible collapse\n  return true;\n}\n```\n\nCommit a height only when it passes the predicate *and* is stable across two consecutive RO deliveries (RO fires on every reflow, so \"same value twice\" is the practical \"settled\" signal). Then you can stop observing that row if you want.\n\n## Checklist for your case\n\n- [ ] Stop appending the probe to `document.body`. That single move is dropping your custom properties, container-query context, and theme classes \u2014 it fully explains \"shorter than rendered\" and \"compact is especially wrong.\"\n- [ ] Measure in place with a `ResizeObserver` (`borderBoxSize[0].blockSize`), cache by stable id, feed back into the offset map.\n- [ ] If you must probe off-flow: mount inside the real container subtree, pin the real width, keep `height:auto`, don't copy computed styles.\n- [ ] `await document.fonts.ready` before trusting heights.\n- [ ] `Math.ceil` heights before layout; pick border-box and stay in it.\n- [ ] Reject border-only/collapsed reads; commit only settled values.\n- [ ] Consider `content-visibility: auto` + `contain-intrinsic-size: auto <last>` to let the browser reserve and self-correct.\n"}], "grading": null}, {"id": "eval-1-offscreen-clone-context-without_skill", "prompt": "I'm building virtualization for a feed. Before rendering a row I need its height so I can position rows. My approach: I clone the row node and append the clone to document.body with `position:absolute; visibility:hidden; height:auto`, then read `getBoundingClientRect().height`. It mostly works, but a bunch of rows come back noticeably shorter than they actually render, and rows in our themed \"compact density\" mode are especially wrong. The real rows live inside a container that uses container queries and CSS custom properties for spacing and font size. What's going wrong, and what should I do instead?", "eval_id": 1, "outputs": [{"name": "answer.md", "type": "text", "content": "# Why your off\u2011screen clone measures short\n\nShort version: you're measuring the row **in the wrong styling context**. When you `appendChild` the clone to `document.body`, you rip it out of the subtree that gives it its size. Two things that live on ancestors \u2014 **container queries** and **inherited CSS custom properties** \u2014 stop resolving, and a third \u2014 **width** \u2014 is left unconstrained. The result is a node that computes a smaller layout than the real row, and it's worst exactly where those ancestors matter most: your themed \"compact density\" mode.\n\nLet me break down each cause, because your bug is almost certainly a combination of all of them.\n\n---\n\n## 1. Container queries don't have a container anymore\n\nYour real rows live inside a container that \"uses container queries.\" That means somewhere up the tree there's an element with `container-type: inline-size` (or `size`), and your row's styles include `@container (...) { ... }` rules that change padding, line clamping, font size, direction of layout, etc.\n\nA `@container` rule resolves against the **nearest ancestor that is a query container**. When you move the clone under `<body>`:\n\n- There is no query container ancestor (unless `<body>` happens to be one, which it isn't).\n- So **every `@container` rule fails to match** and falls back to the default (outside-any-container) styles.\n\nIf your compact layout, multi-line clamp, or reduced padding is expressed via container queries \u2014 which is the whole point of the container in your description \u2014 the clone renders as if the container were at its default/widest breakpoint. That typically produces a **shorter** box (fewer wrapped lines, tighter clamp, single-row instead of stacked layout).\n\nThis alone explains \"a bunch of rows come back noticeably shorter.\"\n\n## 2. Inherited custom properties evaporate\n\nThis is the big one for \"compact density is especially wrong.\"\n\nCSS custom properties (`--row-gap`, `--font-size`, `--line-height`, `--space-unit`, \u2026) are **inherited**. Your density/theme system almost certainly sets them on a theme root or on the feed container:\n\n```css\n.feed[data-density=\"compact\"] {\n  --row-padding: 4px;\n  --row-font-size: 13px;\n  --row-line-height: 1.2;\n}\n```\n\nThe row reads them:\n\n```css\n.row {\n  padding: var(--row-padding, 12px);\n  font-size: var(--row-font-size, 15px);\n  line-height: var(--row-line-height, 1.5);\n}\n```\n\nWhen the clone is under `<body>`, it no longer inherits those variables. Every `var()` **falls back to its default** (the second argument, or the property's initial value, or `unset`). So:\n\n- In *normal* density, the clone accidentally lands near the fallback values, so it's only a little off.\n- In *compact* density, the real row is driven entirely by the compact variable overrides. The clone loses all of them and reverts to the fallbacks (which are your *comfortable* defaults). So the clone renders larger font / more padding than compact... \n\n\u2014but you said compact comes back *shorter*, not taller. That points to the interaction with **width and container queries**: the compact container is also narrower or triggers a compact `@container` branch that wraps text differently. With the variables gone *and* the container query gone, the text lays out at fallback font size across an unconstrained (usually too\u2011wide) width, wraps onto fewer lines, and the measured height collapses. Either way, the root cause is identical: **the clone is not inheriting the cascade that the real row lives in.**\n\n## 3. Width is unconstrained, so wrapping is wrong\n\nYou set `position:absolute; visibility:hidden; height:auto` but you did **not** pin the width. An absolutely\u2011positioned block with no `width` and no positioning offsets shrinks/expands based on content and containing block, and in practice you get a width that has nothing to do with the real row's content-box width.\n\nRow height for anything with text is a function of width (wrapping). Measure at the wrong width and you get the wrong number of lines and the wrong height. This is a classic virtualization measurement bug independent of the theming issue.\n\n## 4. Web fonts may not be loaded yet\n\nIf you measure before the row's web font is ready, the browser lays out with a fallback font whose metrics differ, then swaps (`font-display: swap`) later and reflows. Your cached height is then stale/short. Any measurement strategy has to wait for `document.fonts.ready`.\n\n---\n\n## What to do instead\n\nThe governing principle: **measure the node inside the real styling context, at the real content width, after fonts are ready.** Don't lift it out of the tree.\n\nYou have two good strategies. Prefer the second if you can.\n\n### Strategy A \u2014 Off\u2011screen measurement *inside a clone of the container*\n\nIf you must pre-measure before the row is on screen, don't append to `<body>`. Build a hidden measuring host that **reproduces the container hierarchy** \u2014 same container element with `container-type`, same density/theme attributes and classes, same width as the real content column \u2014 and put the row clone inside *that*.\n\n```js\nclass RowMeasurer {\n  constructor(realContainer) {\n    // Clone the container chain that carries container-type + theme vars,\n    // but empty of rows. Keep it attached so the cascade + container queries work.\n    this.host = document.createElement('div');\n    this.host.style.cssText = `\n      position: absolute;\n      top: 0; left: -99999px;   /* off-screen, NOT display:none */\n      visibility: hidden;\n      pointer-events: none;\n      contain: layout style;     /* don't let it affect the page */\n    `;\n\n    // Recreate the container that defines the query context.\n    this.container = realContainer.cloneNode(false); // shallow: attrs/classes only\n    // Ensure it is a query container and matches theme/density.\n    // (cloneNode copies class + data-* attributes, which usually carries this.)\n    this.host.appendChild(this.container);\n    document.body.appendChild(this.host);\n\n    this.ro = new ResizeObserver(() => {}); // optional\n  }\n\n  setWidth(px) {\n    // Pin the container to the real content-box width so wrapping matches.\n    this.container.style.width = px + 'px';\n    this.container.style.containerType ||= 'inline-size';\n  }\n\n  measure(rowNode) {\n    const clone = rowNode.cloneNode(true);\n    clone.style.height = 'auto';\n    this.container.appendChild(clone);\n    const h = clone.getBoundingClientRect().height;\n    this.container.removeChild(clone);\n    return h;\n  }\n}\n\n// usage\nawait document.fonts.ready;\nconst measurer = new RowMeasurer(realFeedContainer);\nmeasurer.setWidth(realFeedContainer.clientWidth); // or the exact content width\nconst height = measurer.measure(rowTemplateNode);\n```\n\nKey differences from your version:\n\n- The clone lives inside a **real query container** (`container-type: inline-size`), so `@container` rules match.\n- The container carries the **same classes / `data-density` / theme attributes**, so the custom properties are inherited and compact mode resolves correctly. If your variables are set higher up (e.g. on `<html data-theme>` or a provider), also copy those onto the host, or mount the host *inside* the theme root instead of `<body>`.\n- **Width is pinned** to the real content width, so text wraps identically.\n- Use `left: -99999px` + `visibility: hidden`, **not** `display: none`. `display: none` yields a zero/absent layout and `getBoundingClientRect()` returns zeros; also container queries on a `display:none` subtree don't lay out.\n- Measure **after `document.fonts.ready`**.\n- `contain: layout style` (and keeping it off-screen) prevents the measuring host from perturbing the page.\n\nMatch `box-sizing`, and remember `getBoundingClientRect().height` is the **border-box** height including padding and border but **excluding margins**. If your virtualizer positions rows using margin-collapsed spacing, add the row's vertical margins explicitly.\n\n### Strategy B (preferred) \u2014 Measure the *real* rows and cache, don't pre-clone\n\nCloning is fragile: you have to keep the measuring context perfectly in sync with the real one (theme changes, density toggles, viewport-driven container breakpoints, font loading). The more robust pattern used by mature virtualization libs is **measure-on-mount with an estimate + correction**:\n\n1. Start with an **estimated** row height (a constant, or a cheap heuristic from content length) so you can position rows immediately.\n2. When a row actually mounts into the real container, measure its real rendered height with `ResizeObserver` / `getBoundingClientRect()` \u2014 this is by definition in the correct context, correct width, correct theme, post-font.\n3. **Cache** the measured height keyed by row id, and reconcile the scroll offsets (adjust the running offset map by the delta). Re-measure on width/density/theme changes.\n\n```js\nconst measured = new Map();      // id -> height\nconst estimate = 72;\n\nfunction getHeight(id) {\n  return measured.get(id) ?? estimate;\n}\n\nconst ro = new ResizeObserver((entries) => {\n  let dirty = false;\n  for (const entry of entries) {\n    const id = entry.target.dataset.rowId;\n    const h = entry.borderBoxSize?.[0]?.blockSize ?? entry.target.offsetHeight;\n    if (measured.get(id) !== h) { measured.set(id, h); dirty = true; }\n  }\n  if (dirty) scheduleReflow(); // recompute offsets, keep scroll anchored\n});\n\n// when a row element mounts:\nro.observe(rowEl); // rowEl.dataset.rowId = id\n```\n\nThis eliminates every one of your four bugs by construction, because you never measure outside the real context. The only cost is a brief correction on first paint of each row, which `ResizeObserver` makes cheap and jank-free. If you're on React, this is exactly what TanStack Virtual's `measureElement` / dynamic mode does \u2014 worth using rather than hand-rolling.\n\n- Invalidate the whole cache on `container` width breakpoints, density toggles, and theme changes (a `ResizeObserver` on the container plus a mutation/observer on the theme attribute).\n- Re-run after `document.fonts.ready` once at startup.\n\n---\n\n## Recommendation\n\n- If you can tolerate a one-frame correction (almost everyone can): use **Strategy B**. It's the correct model for container-query + custom-property-driven rows because \"the height\" genuinely depends on runtime context, and the only source of truth is the real DOM.\n- If you truly need the height *before* the row exists on screen: use **Strategy A**, but understand you are signing up to keep the measuring host's container type, theme variables, width, and font state in lockstep with reality forever. Mount the host **inside the theme/density root**, make it a real query container, pin the width, and wait for fonts.\n\nWhatever you pick, drop `document.body` as the measurement parent \u2014 that single choice is what's throwing away your container queries and your compact-density variables and producing the short rows.\n"}], "grading": null}, {"id": "eval-2-animate-to-content-height-with_skill", "prompt": "Write a React + TypeScript hook `useAutoHeight` for an expand/collapse panel: when open, the container animates its height from 0 to the natural height of its children, and back to 0 when closed. It needs to handle children whose height can change while open (text that reflows on resize, async content that loads in later). Give me the hook plus the minimal CSS. Keep it robust \u2014 I've been bitten before by the height being measured wrong.", "eval_id": 2, "outputs": [{"name": "answer.md", "type": "text", "content": "# `useAutoHeight` \u2014 animate a panel from 0 to its content's natural height\n\nHere's a version that's built to survive the exact things that bite people: content that reflows on resize, async content that streams in after the animation started, and the classic \"measured height comes back wrong / zero / one line short.\"\n\nThe single most important design decision is **what we measure**. We never measure the animating container (its height is `0` or a pinned pixel value \u2014 measuring it just reads back what we set). We put an inner wrapper inside it that is **never height-constrained** (`height: auto`, in normal block flow) and observe *that* with a `ResizeObserver`. The container clips it with `overflow: hidden`. So the number we read is always the true content height, whether the panel is open, closed, or mid-animation \u2014 and it re-fires by itself on every reflow, font swap, image load, or async chunk.\n\n## The hook\n\n```tsx\nimport {\n  useEffect,\n  useLayoutEffect,\n  useRef,\n  useState,\n  type CSSProperties,\n  type RefObject,\n  type TransitionEvent,\n} from \"react\";\n\n// useLayoutEffect warns during SSR (there's no DOM to measure). Fall back to\n// useEffect on the server; the first real measurement happens on the client anyway.\nconst useIsoLayoutEffect =\n  typeof window !== \"undefined\" ? useLayoutEffect : useEffect;\n\n/**\n * Reject a measurement we shouldn't trust, and ceil the ones we keep.\n *\n * - non-finite / negative -> the element was detached or `display:none`\n *   (a `display:none` box generates no layout, so it reads 0). Don't commit it.\n * - `Math.ceil` because a height rounded *down* crops the final text line by a\n *   sub-pixel \u2014 the \"last line is clipped\" bug. Round up so the box never clips.\n *\n * Note we deliberately do NOT apply the aggressive \"border-only\" / \"implausible\n * collapse\" guard here. That guard exists for elements whose layout context can\n * starve them (a flex/grid child stretched by a sibling, a percentage-height box\n * under an auto-height parent). Our measured node is a plain block in normal flow\n * with `height:auto` \u2014 it structurally cannot collapse to border-only, so a small\n * or zero reading here is a *real* small/empty panel, and we honor it.\n */\nfunction trustHeight(blockSize: number): number | null {\n  if (!Number.isFinite(blockSize) || blockSize < 0) return null;\n  return Math.ceil(blockSize);\n}\n\nexport interface UseAutoHeightOptions {\n  /** Fired when the open/close transition finishes. `open` = the resting state. */\n  onRest?: (open: boolean) => void;\n}\n\nexport interface UseAutoHeightResult {\n  /** Spread onto the outer clipping container (the element that animates). */\n  containerProps: {\n    ref: RefObject<HTMLDivElement | null>;\n    className: string;\n    style: CSSProperties;\n    \"data-ready\"?: \"\";\n    \"aria-hidden\"?: boolean;\n    inert?: boolean;\n    onTransitionEnd: (e: TransitionEvent<HTMLElement>) => void;\n  };\n  /** Spread onto the inner wrapper that holds your children (the measured node). */\n  contentProps: {\n    ref: RefObject<HTMLDivElement | null>;\n    className: string;\n  };\n  /** The last trusted natural height of the content, in px (null before first measure). */\n  measuredHeight: number | null;\n}\n\nexport function useAutoHeight(\n  open: boolean,\n  options: UseAutoHeightOptions = {},\n): UseAutoHeightResult {\n  const { onRest } = options;\n\n  const containerRef = useRef<HTMLDivElement | null>(null);\n  const contentRef = useRef<HTMLDivElement | null>(null);\n\n  // Natural (unconstrained) height of the content. Always live \u2014 the observer\n  // keeps it current even while the panel is closed, so the target is ready the\n  // instant `open` flips.\n  const [measuredHeight, setMeasuredHeight] = useState<number | null>(null);\n\n  // Suppress the transition on the very first commit so an initially-open panel\n  // doesn't animate up from 0 on mount.\n  const [ready, setReady] = useState(false);\n\n  // Observe the CONTENT node (height:auto, unconstrained). ResizeObserver fires\n  // after layout / before paint, and re-fires on every reflow: text rewrap on a\n  // window resize, web-font swap, image load, async children streaming in. That\n  // turns \"is the height final yet?\" from a guess into an event we subscribe to.\n  useIsoLayoutEffect(() => {\n    const el = contentRef.current;\n    if (!el) return;\n\n    const ro = new ResizeObserver((entries) => {\n      const entry = entries[0];\n      if (!entry) return;\n      // Prefer the borderBoxSize the observer already computed (no forced reflow);\n      // fall back to a rect read on the rare engine that omits it.\n      const block =\n        entry.borderBoxSize?.[0]?.blockSize ??\n        entry.target.getBoundingClientRect().height;\n\n      const next = trustHeight(block);\n      if (next == null) return;\n      setMeasuredHeight((prev) => (prev === next ? prev : next));\n    });\n\n    ro.observe(el, { box: \"border-box\" });\n    return () => ro.disconnect();\n  }, []);\n\n  // Enable transitions after the first paint has committed.\n  useEffect(() => {\n    const id = requestAnimationFrame(() => setReady(true));\n    return () => cancelAnimationFrame(id);\n  }, []);\n\n  // Resolve the container's height:\n  //   open   -> the measured px (or `auto` for the one frame before first measure)\n  //   closed -> 0\n  // Because measuredHeight is kept live even while closed, the open case almost\n  // always has a real px value already, so 0px -> Npx animates cleanly.\n  const height: CSSProperties[\"height\"] = open\n    ? measuredHeight != null\n      ? measuredHeight\n      : \"auto\"\n    : 0;\n\n  const handleTransitionEnd = (e: TransitionEvent<HTMLElement>) => {\n    // Ignore bubbling transitions from children; only react to our own height.\n    if (e.target === containerRef.current && e.propertyName === \"height\") {\n      onRest?.(open);\n    }\n  };\n\n  return {\n    containerProps: {\n      ref: containerRef,\n      className: \"auto-height\",\n      style: { height },\n      ...(ready ? { \"data-ready\": \"\" as const } : {}),\n      \"aria-hidden\": !open,\n      // Keep collapsed content out of the tab order & AT tree without\n      // `display:none` (which would destroy our measurement). Requires React 19+;\n      // drop this line and manage focus yourself on older React.\n      inert: !open,\n      onTransitionEnd: handleTransitionEnd,\n    },\n    contentProps: {\n      ref: contentRef,\n      className: \"auto-height__content\",\n    },\n    measuredHeight,\n  };\n}\n```\n\n## The minimal CSS\n\n```css\n.auto-height {\n  overflow: hidden; /* clips the content while the box is shorter than it */\n  transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);\n  will-change: height;\n}\n\n/* No transition until the hook marks the first commit as ready \u2014 stops an\n   initially-open panel from animating from 0 on mount. */\n.auto-height:not([data-ready]) {\n  transition: none;\n}\n\n/* Respect the user's motion preference \u2014 snap instead of animate. */\n@media (prefers-reduced-motion: reduce) {\n  .auto-height {\n    transition: none;\n  }\n}\n\n/* The measured node. It must stay height:auto and full-width so it always\n   reports its true natural height. Do NOT put height:0 / overflow:hidden here \u2014\n   that's the container's job, not the content's. */\n.auto-height__content {\n  width: 100%;\n}\n```\n\n## Usage\n\n```tsx\nfunction FaqItem({ question, answer }: { question: string; answer: React.ReactNode }) {\n  const [open, setOpen] = useState(false);\n  const { containerProps, contentProps } = useAutoHeight(open);\n\n  return (\n    <div>\n      <button aria-expanded={open} onClick={() => setOpen((o) => !o)}>\n        {question}\n      </button>\n      <div {...containerProps}>\n        <div {...contentProps}>{answer}</div>\n      </div>\n    </div>\n  );\n}\n```\n\n## Why it's robust \u2014 the parts that actually matter\n\n**We measure the content, not the container.** The container's height is a value *we* write (`0` / `Npx`), so reading it back tells us nothing. The inner `.auto-height__content` node is a plain block in normal flow at `height: auto`, so it always resolves to its true content height. This is the whole ballgame: height is a function of the available width and the content, and this node is never starved of either. The container clipping it with `overflow: hidden` does **not** constrain the child's own layout height \u2014 the child simply overflows and the observer sees the full number.\n\n**The height is always live, even while closed.** Because the content node is real and unconstrained the whole time (never `display:none`), the observer keeps `measuredHeight` current whether the panel is open or shut. So when someone clicks \"open,\" the target height is already known and correct \u2014 no first-open flicker, no reading a stale zero.\n\n**Content that changes while open just works.** A `ResizeObserver` doesn't fire once; it re-fires on *every* reflow. Window resize that rewraps a paragraph, a web font swapping in and changing line boxes, an image finishing decode, an async fetch injecting more DOM \u2014 each triggers the callback, `measuredHeight` updates, and the container animates to the new height. You don't have to know *when* content is \"done\"; you observe and let it settle. (This is why the hook does not take a one-shot `scrollHeight` snapshot \u2014 a snapshot taken before the async content lands would be too short, and the content would sit clipped behind `overflow: hidden`.)\n\n**`Math.ceil` on every committed height.** Sub-pixel content heights rounded *down* crop the final line of text by a fraction of a pixel \u2014 the \"why is the descender of the last line cut off\" bug. We always round up.\n\n**No `display: none`, ever.** A `display: none` element generates no layout box and measures `0`. That's why collapsed content is hidden with `height: 0` + `overflow: hidden` on the container (which keeps the box) and taken out of the a11y/tab tree with `aria-hidden` + `inert` \u2014 never with `display: none`, which would blind the observer.\n\n**`useLayoutEffect` (via the SSR-safe shim), not `useEffect`.** Measurement and the initial style commit run after DOM mutation but before paint, so you never get a flash of the un-sized state. The shim degrades to `useEffect` on the server to avoid the React SSR warning.\n\n## Two variations, depending on your taste\n\n- **Content changes animate too (this default).** Every content change eases to the new height over 300ms \u2014 async content \"grows in,\" resize reflow glides. Usually what you want, and it's the most robust because the container height tracks the content continuously; content is never clipped.\n- **Instant on resize, animate only on toggle.** If you find the 300ms lag on window-resize reflow distracting, switch the container to `height: auto` once the open transition finishes (in `onRest`, when `open` is true). Reflow while open is then instant. The cost: collapsing must first snap `auto \u2192 measuredHeight` px, then to `0` on the next frame, so the transition has two definite endpoints to animate between. The version above avoids that complexity by keeping a pixel value at all times, which is why it can go straight from any current height to `0` and back.\n\n**Web fonts, one extra nicety:** the observer already catches the font-swap reflow, so the panel self-corrects when the font loads. If you want to avoid animating that correction on a very first open, you can `await document.fonts.ready` before enabling transitions \u2014 but for most panels the automatic re-measure is fine and simpler.\n"}], "grading": null}, {"id": "eval-2-animate-to-content-height-without_skill", "prompt": "Write a React + TypeScript hook `useAutoHeight` for an expand/collapse panel: when open, the container animates its height from 0 to the natural height of its children, and back to 0 when closed. It needs to handle children whose height can change while open (text that reflows on resize, async content that loads in later). Give me the hook plus the minimal CSS. Keep it robust \u2014 I've been bitten before by the height being measured wrong.", "eval_id": 2, "outputs": [{"name": "answer.md", "type": "text", "content": "# `useAutoHeight` \u2014 a robust expand/collapse height hook\n\nAnimating to `height: auto` is the classic \"why is this wrong again\" problem. The browser can't transition to/from `auto`, so you have to feed it a real pixel value. The traps that bite people are almost always about *when and how you measure that pixel value*:\n\n- measuring while the element is `display: none` (you get `0`),\n- measuring once, before web fonts / images / async content settle (you get a stale, too-short height and the panel clips),\n- letting a React re-render overwrite the height you set imperatively,\n- margin-collapse eating the top/bottom margin of the children out of your measurement,\n- a mount-time flash where a panel that starts open animates open from 0.\n\nThe design below sidesteps all of these. The core ideas:\n\n1. **Never unmount or `display: none` the content** \u2014 collapse is done purely with `overflow: hidden` + `height: 0`. The content stays laid out and measurable at all times.\n2. **A `ResizeObserver` is the single source of truth for the natural height.** We don't measure once \u2014 we *subscribe* to the content's size. When text reflows on resize or async content loads in, the observer fires and we re-pin the height. The CSS transition animates the delta for free.\n3. **The height is written imperatively to the DOM, never through React's `style` prop.** React only manages properties it knows about; since `height` is never in the returned `style` object, re-renders can't clobber it.\n4. **The first commit is applied with the transition suppressed**, so a panel that starts open just *is* open, with no animate-from-zero flash.\n\n---\n\n## The hook\n\n```tsx\n// useAutoHeight.ts\nimport {\n  useEffect,\n  useLayoutEffect,\n  useRef,\n  type CSSProperties,\n  type RefObject,\n} from 'react';\n\n// useLayoutEffect warns during SSR; fall back to useEffect on the server.\nconst useIsomorphicLayoutEffect =\n  typeof window !== 'undefined' ? useLayoutEffect : useEffect;\n\nexport interface UseAutoHeightOptions {\n  /** Transition duration in ms. Default: 300. */\n  duration?: number;\n  /** CSS timing function. Default: 'ease'. */\n  easing?: string;\n}\n\nexport interface UseAutoHeightResult<\n  C extends HTMLElement,\n  I extends HTMLElement,\n> {\n  /** Spread onto the OUTER clipping container. */\n  containerProps: {\n    ref: RefObject<C | null>;\n    className: string;\n    style: CSSProperties;\n    'aria-hidden': boolean;\n    inert?: boolean;\n  };\n  /** Spread onto the INNER content wrapper (the thing whose height we track). */\n  contentProps: {\n    ref: RefObject<I | null>;\n  };\n  /** Escape hatches if you'd rather wire refs by hand. */\n  containerRef: RefObject<C | null>;\n  contentRef: RefObject<I | null>;\n}\n\nexport function useAutoHeight<\n  C extends HTMLElement = HTMLDivElement,\n  I extends HTMLElement = HTMLDivElement,\n>(\n  open: boolean,\n  options: UseAutoHeightOptions = {},\n): UseAutoHeightResult<C, I> {\n  const { duration = 300, easing = 'ease' } = options;\n\n  const containerRef = useRef<C | null>(null);\n  const contentRef = useRef<I | null>(null);\n\n  // Let the ResizeObserver read the latest `open` without re-subscribing.\n  const openRef = useRef(open);\n  openRef.current = open;\n\n  // Suppress the transition on the very first commit (no mount flash).\n  const isFirstRun = useRef(true);\n\n  useIsomorphicLayoutEffect(() => {\n    const container = containerRef.current;\n    const content = contentRef.current;\n    if (!container || !content) return;\n\n    // getBoundingClientRect gives a fractional (sub-pixel) border-box height,\n    // which avoids the 1px clip you get from integer offsetHeight.\n    const measure = (): number => content.getBoundingClientRect().height;\n\n    const setHeight = (px: number) => {\n      // Written straight to the DOM \u2014 NOT via React's style prop \u2014 so a\n      // parent re-render can never reset it.\n      container.style.height = `${px}px`;\n    };\n\n    const target = open ? measure() : 0;\n\n    if (isFirstRun.current) {\n      // Jump to the correct height with the transition turned off, so a\n      // panel that starts open doesn't animate open from zero.\n      const prevTransition = container.style.transition;\n      container.style.transition = 'none';\n      setHeight(target);\n      // Force a style flush so subsequent changes animate from `target`.\n      void container.offsetHeight;\n      container.style.transition = prevTransition;\n      isFirstRun.current = false;\n    } else {\n      setHeight(target);\n    }\n\n    // While open, keep the height pinned to the LIVE content size.\n    // This is what makes reflow-on-resize and async content Just Work:\n    // the observer fires, we re-pin, the CSS transition animates the delta.\n    const observer = new ResizeObserver((entries) => {\n      if (!openRef.current) return;\n      // borderBoxSize is unaffected by CSS transforms on ancestors\n      // (getBoundingClientRect would report the scaled size).\n      const box = entries[0]?.borderBoxSize?.[0];\n      setHeight(box ? box.blockSize : measure());\n    });\n    observer.observe(content);\n\n    return () => observer.disconnect();\n  }, [open, duration, easing]);\n\n  // Only static, safe-to-reconcile props go through React's style.\n  // `height` is deliberately absent \u2014 the effect owns it.\n  const style: CSSProperties = {\n    // Custom props feed the CSS transition; overridable per-instance.\n    ['--auto-height-duration' as string]: `${duration}ms`,\n    ['--auto-height-easing' as string]: easing,\n  };\n\n  return {\n    containerProps: {\n      ref: containerRef,\n      className: 'auto-height',\n      style,\n      'aria-hidden': !open,\n      // Keep collapsed content out of the tab order / a11y tree.\n      inert: !open,\n    },\n    contentProps: { ref: contentRef },\n    containerRef,\n    contentRef,\n  };\n}\n```\n\n---\n\n## The CSS (minimal)\n\n```css\n.auto-height {\n  height: 0; /* initial + SSR state before the effect runs */\n  overflow: hidden; /* the clip that makes 0-height hide the content */\n  transition: height var(--auto-height-duration, 300ms)\n    var(--auto-height-easing, ease);\n}\n\n/* Respect users who don't want motion \u2014 collapse instantly. */\n@media (prefers-reduced-motion: reduce) {\n  .auto-height {\n    transition-duration: 1ms;\n  }\n}\n```\n\nThat's the whole required stylesheet. Two rules matter:\n\n- `overflow: hidden` \u2014 without it the content spills out of the 0-height box.\n- `height: 0` as the base \u2014 this is the value that's in effect during SSR and for the split second before the layout effect runs, so a closed panel is closed from the very first paint.\n\n> **Optional but recommended:** give your inner content wrapper `display: flow-root` (or padding). This establishes a block formatting context so the children's top/bottom margins are *inside* the measured box instead of collapsing through it. Margin-collapse is the sneakiest source of \"the measured height is a bit short.\"\n\n```css\n.auto-height__content {\n  display: flow-root; /* prevents child margins collapsing out of the measurement */\n}\n```\n\n---\n\n## Usage\n\n```tsx\nfunction FaqItem({ question, answer }: { question: string; answer: React.ReactNode }) {\n  const [open, setOpen] = React.useState(false);\n  const { containerProps, contentProps } = useAutoHeight(open);\n\n  return (\n    <div>\n      <button aria-expanded={open} onClick={() => setOpen((o) => !o)}>\n        {question}\n      </button>\n\n      {/* OUTER: the clipping container the hook drives */}\n      <div {...containerProps}>\n        {/* INNER: the natural-height content the hook measures */}\n        <div {...contentProps} className=\"auto-height__content\">\n          {answer}\n        </div>\n      </div>\n    </div>\n  );\n}\n```\n\nThe two-element structure (**outer clipper** + **inner content**) is not optional. The outer element's height is animated and clipped; the inner element is left at its natural height so it's always honestly measurable. If you put both jobs on one element you're back to fighting the browser.\n\n---\n\n## Why this survives the things that usually break it\n\n| Failure mode | How this avoids it |\n|---|---|\n| **Content changes while open** (text reflow on resize, async data loading in) | The `ResizeObserver` is subscribed to the inner content the whole time it's open. Any size change re-pins the height and the transition animates to it \u2014 no manual \"remeasure\" call needed. |\n| **Measuring a hidden element gives 0** | The content is never `display: none` and never unmounted. Collapse is `overflow: hidden` + `height: 0`, so the inner element always has a real, measurable layout height. |\n| **Measured too early** (before fonts/images settle) | We don't measure once. Fonts loading, images decoding, and lazy content all change the box size \u2192 the observer fires \u2192 we correct. Self-healing by construction. |\n| **React re-render resets the height** | `height` is written straight to `container.style` and is never present in the React-managed `style` prop, so reconciliation leaves it alone. |\n| **Mount flash** (a panel that starts open animates from 0) | The first commit runs inside a `transition: none` window with a forced reflow, so it snaps to the correct height instantly. |\n| **Sub-pixel clipping** | We read a fractional height (`getBoundingClientRect` / `borderBoxSize.blockSize`) instead of integer `offsetHeight`. |\n| **CSS transforms lie about size** | Inside the observer we prefer `borderBoxSize`, which reports layout size regardless of an ancestor `scale()`. |\n| **Margin collapse shortens the measurement** | Recommended `display: flow-root` on the content wrapper keeps child margins inside the measured box. |\n| **Accessibility / tab order** | Collapsed content gets `aria-hidden` + `inert`, so it's out of the a11y tree and unfocusable while hidden, but still in the DOM and measurable. |\n| **Reduced-motion users** | A single media query drops the duration to ~0; the imperative height writes then apply instantly with no visible animation. |\n\n### Notes and trade-offs\n\n- **We keep the height pinned to a pixel value even when fully open** (rather than snapping to `height: auto` after the open transition). This is a deliberate choice: staying pixel-pinned is exactly what lets dynamic content animate smoothly, at the cost of the observer running while the panel is open. That cost is negligible \u2014 `ResizeObserver` is cheap and only writes when the size actually changes.\n- **The animation follows content growth while open.** If async content loads in 400ms after opening, you'll see the panel glide to its new height. That's usually what you want; if you'd rather it snap for late loads, you could gate the observer to only animate within a window after `open` flips.\n- **`inert`** is broadly supported in modern browsers and typed on React 19's DOM props. On older React typings, cast it or drop it and rely on `aria-hidden` alone.\n- **`ResizeObserver`** is universally available in evergreen browsers. If you must support ancient ones, polyfill it \u2014 everything else in the hook degrades gracefully (you'd just lose live re-measurement, keeping open/close).\n"}], "grading": null}], "previous_feedback": {}, "previous_outputs": {}, "benchmark": {"metadata": {"skill_name": "layout-measurement-strategy", "skill_path": "<path/to/skill>", "executor_model": "<model-name>", "analyzer_model": "<model-name>", "timestamp": "2026-07-01T14:41:29Z", "evals_run": [0, 1, 2], "runs_per_configuration": 3}, "runs": [{"eval_id": 0, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5, "time_seconds": 87.8, "tokens": 44871, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "diagnoses-border-only: measured before async/streamed content laid out, offsetHeight returns only chrome/border (~2px)", "passed": true, "evidence": "TL;DR + Diagnosis explicitly name 'border-only measurement of ~2px', empty body on first commit, chrome border only."}, {"text": "uses-resizeobserver-settle: observe and take settled value, not a single mount read", "passed": true, "evidence": "ResizeObserver hook; commits only when stable across two consecutive RO deliveries ('settled' signal)."}, {"text": "rejects-border-only-guard: refuses border-only/near-zero measurement", "passed": true, "evidence": "isTrustworthy() predicate rejects borderBoxH - chromeH <= 1 and implausible collapse; consumer gates badge on height != null."}, {"text": "handles-content-readiness: fonts/images cause late height change", "passed": true, "evidence": "Explains fonts swap + image decode; adds document.fonts.ready nudge for deterministic settle."}, {"text": "abandons-oneshot-mount: recognizes one-shot read is the root problem", "passed": true, "evidence": "'Why measure at the right instant cant be the fix' section; replaces [] effect with observe-and-settle."}], "notes": []}, {"eval_id": 1, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5, "time_seconds": 66.1, "tokens": 42943, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "identifies-body-context-loss: body-append drops vars/theme classes/container ancestry", "passed": true, "evidence": "Lists lost custom properties, ancestor classes ([data-density], .dark), container-query context on document.body."}, {"text": "explains-container-query-break: container queries resolve against absent/wrong container off-body", "passed": true, "evidence": "Explains @container rules fail to match with no query container ancestor, flipping to default branch."}, {"text": "recommends-in-place-or-subtree: measure in place / probe inside real subtree / reproduce container+width", "passed": true, "evidence": "Best option = measure real rows in place with RO + cache; off-flow probe must mount inside real container subtree."}, {"text": "fixes-inline-size: measure at real inline size (height is function of width)", "passed": true, "evidence": "'Pin the real inline size'; notes unconstrained absolute clone has wrong width -> wrong wrapping."}, {"text": "warns-copy-computed: dont snapshot getComputedStyle; replicate ancestors", "passed": true, "evidence": "'Do NOT clone getComputedStyle onto the probe. That freezes %/em/ch/fit-content and kills container queries.'"}], "notes": []}, {"eval_id": 2, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 198.3, "tokens": 57821, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "measures-without-height-zero: measure inner auto-height node, not the constrained animating element", "passed": true, "evidence": "Inner .auto-height__content stays height:auto in normal flow; RO observes it; container clips with overflow:hidden. Explicit 'measure the content, not the container'."}, {"text": "resizeobserver-changing-content: RO so height updates on reflow/async content", "passed": true, "evidence": "RO re-fires on resize rewrap, font swap, image load, async chunk; measuredHeight kept live even while closed."}, {"text": "animate-px-then-auto: handles height:auto animation correctly; accounts for auto after transition", "passed": true, "evidence": "Animates 0<->measured px; keeps px pinned + RO re-pin so growth isnt clipped; 'Two variations' discusses switching to height:auto after open transition tradeoff."}, {"text": "correct-measure-timing: useLayoutEffect/rAF/RO, Math.ceil to avoid clipping", "passed": true, "evidence": "useIsoLayoutEffect shim; Math.ceil on committed height; borderBoxSize preferred (reflow-free, transform-safe)."}], "notes": []}, {"eval_id": 0, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.8, "passed": 4, "failed": 1, "total": 5, "time_seconds": 52.7, "tokens": 37632, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "diagnoses-border-only: measured before async/streamed content laid out, offsetHeight returns only chrome/border (~2px)", "passed": true, "evidence": "Timeline explains 2px = chrome top+bottom border with empty body on first commit."}, {"text": "uses-resizeobserver-settle: observe and take settled value, not a single mount read", "passed": true, "evidence": "useMeasuredHeight uses ResizeObserver updating on initial box + every reflow; no explicit stability/settle check but not a one-shot read."}, {"text": "rejects-border-only-guard: refuses border-only/near-zero measurement", "passed": false, "evidence": "No validity predicate; setHeight(h) commits whatever RO reports. Suggests min-height reserve but no reject-garbage guard on the consumer side."}, {"text": "handles-content-readiness: fonts/images cause late height change", "passed": true, "evidence": "Discusses web-font swap + image decode; recommends aspect-ratio, font-display, preload."}, {"text": "abandons-oneshot-mount: recognizes one-shot read is the root problem", "passed": true, "evidence": "Identifies [] one-shot as root cause; also offers CSS-first alternative (badge via top/right needs no measurement)."}], "notes": []}, {"eval_id": 1, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5, "time_seconds": 73.5, "tokens": 38748, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "identifies-body-context-loss: body-append drops vars/theme classes/container ancestry", "passed": true, "evidence": "Sections 1-2 cover lost container queries and inherited custom properties; compact density driven by variable overrides."}, {"text": "explains-container-query-break: container queries resolve against absent/wrong container off-body", "passed": true, "evidence": "Section 1 explains @container resolves against nearest container ancestor, none under body -> default branch, shorter box."}, {"text": "recommends-in-place-or-subtree: measure in place / probe inside real subtree / reproduce container+width", "passed": true, "evidence": "Strategy A reproduces container chain (mount inside theme root); Strategy B measures real rows on mount + cache."}, {"text": "fixes-inline-size: measure at real inline size (height is function of width)", "passed": true, "evidence": "Section 3 'Width is unconstrained'; setWidth pins container to real content width."}, {"text": "warns-copy-computed: dont snapshot getComputedStyle; replicate ancestors", "passed": true, "evidence": "Advocates replicating ancestors (clone container chain, carry classes/data-* attrs) rather than snapshotting styles; does not use getComputedStyle copy. (Weaker: never explicitly names the getComputedStyle-freeze pitfall.)"}], "notes": []}, {"eval_id": 2, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 181.7, "tokens": 47224, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "measures-without-height-zero: measure inner auto-height node, not the constrained animating element", "passed": true, "evidence": "Two-element outer clipper + inner content; RO observes inner content at natural height; 'if you put both jobs on one element youre back to fighting the browser'."}, {"text": "resizeobserver-changing-content: RO so height updates on reflow/async content", "passed": true, "evidence": "RO subscribed to inner content while open; re-pins height on any size change; table row 'Content changes while open'."}, {"text": "animate-px-then-auto: handles height:auto animation correctly; accounts for auto after transition", "passed": true, "evidence": "Explains cant transition to/from auto, feeds pixel value; keeps px-pinned deliberately, discusses tradeoff of not snapping to auto (notes/trade-offs)."}, {"text": "correct-measure-timing: useLayoutEffect/rAF/RO, Math.ceil to avoid clipping", "passed": true, "evidence": "useIsomorphicLayoutEffect; getBoundingClientRect fractional to avoid 1px clip; borderBoxSize for transform safety. (No Math.ceil, but uses fractional read.)"}], "notes": []}], "run_summary": {"with_skill": {"pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0}, "time_seconds": {"mean": 117.4, "stddev": 70.8966, "min": 66.1, "max": 198.3}, "tokens": {"mean": 48545.0, "stddev": 8090.8855, "min": 42943, "max": 57821}}, "without_skill": {"pass_rate": {"mean": 0.9333, "stddev": 0.1155, "min": 0.8, "max": 1.0}, "time_seconds": {"mean": 102.6333, "stddev": 69.259, "min": 52.7, "max": 181.7}, "tokens": {"mean": 41201.3333, "stddev": 5245.5457, "min": 37632, "max": 47224}}, "delta": {"pass_rate": "+0.07", "time_seconds": "+14.8", "tokens": "+7344"}}, "notes": []}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

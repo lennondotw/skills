@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "identifies-body-context-loss",
+      "passed": true,
+      "evidence": "body drops custom properties, [data-density] theme classes, @container context, real width, shadow adoptedStyleSheets."
+    },
+    {
+      "text": "explains-container-query-break",
+      "passed": true,
+      "evidence": "@container resolves against nearest container ancestor; gone under body -> wrong branch -> wrong wrapping/height; compact worst."
+    },
+    {
+      "text": "recommends-in-place-or-subtree",
+      "passed": true,
+      "evidence": "Option A measure in place inside real container (probe appended to containerEl not body); Option B content-visibility; Option C RO settle."
+    },
+    {
+      "text": "fixes-inline-size",
+      "passed": true,
+      "evidence": "Pin real column width incl scrollbar-gutter; height is function of width."
+    },
+    {
+      "text": "warns-copy-computed",
+      "passed": true,
+      "evidence": "Replicate ancestors (append inside real container so vars/classes/@container resolve) rather than snapshot; also adds margin-collapse flow-root note."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

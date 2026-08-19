@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "diagnoses-border-only: measured before async/streamed content laid out, offsetHeight returns only chrome/border (~2px)",
+      "passed": true,
+      "evidence": "Timeline explains 2px = chrome top+bottom border with empty body on first commit."
+    },
+    {
+      "text": "uses-resizeobserver-settle: observe and take settled value, not a single mount read",
+      "passed": true,
+      "evidence": "useMeasuredHeight uses ResizeObserver updating on initial box + every reflow; no explicit stability/settle check but not a one-shot read."
+    },
+    {
+      "text": "rejects-border-only-guard: refuses border-only/near-zero measurement",
+      "passed": false,
+      "evidence": "No validity predicate; setHeight(h) commits whatever RO reports. Suggests min-height reserve but no reject-garbage guard on the consumer side."
+    },
+    {
+      "text": "handles-content-readiness: fonts/images cause late height change",
+      "passed": true,
+      "evidence": "Discusses web-font swap + image decode; recommends aspect-ratio, font-display, preload."
+    },
+    {
+      "text": "abandons-oneshot-mount: recognizes one-shot read is the root problem",
+      "passed": true,
+      "evidence": "Identifies [] one-shot as root cause; also offers CSS-first alternative (badge via top/right needs no measurement)."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8,
+    "passed": 4,
+    "failed": 1,
+    "total": 5
+  }
+}

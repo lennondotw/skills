@@ -1,0 +1,26 @@
+{
+  "skill_name": "layout-measurement-strategy",
+  "evals": [
+    {
+      "id": 0,
+      "name": "collapsed-tile-badge",
+      "prompt": "We have a widget preview in our design tool. Each widget renders inside a host \"chrome\" wrapper (a div with border + padding), and the widget body inside it is auto-height. A Stage badge is absolutely positioned in the top-right corner of each tile, and we place it using the tile's measured height. Bug: on first render some tiles collapse to about 2px tall and the badge sits in the wrong place overlapping the border; a moment later the tile jumps to its full height and the badge looks fine. The tile body streams its content in asynchronously and can contain web-font text and images. Here's our measuring code:\n\n```tsx\nuseLayoutEffect(() => {\n  const h = tileRef.current!.offsetHeight;\n  setTileHeight(h);\n}, []);\n```\n\nWhy is this happening, and how do we fix it robustly?",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 1,
+      "name": "offscreen-clone-context",
+      "prompt": "I'm building virtualization for a feed. Before rendering a row I need its height so I can position rows. My approach: I clone the row node and append the clone to document.body with `position:absolute; visibility:hidden; height:auto`, then read `getBoundingClientRect().height`. It mostly works, but a bunch of rows come back noticeably shorter than they actually render, and rows in our themed \"compact density\" mode are especially wrong. The real rows live inside a container that uses container queries and CSS custom properties for spacing and font size. What's going wrong, and what should I do instead?",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "animate-to-content-height",
+      "prompt": "Write a React + TypeScript hook `useAutoHeight` for an expand/collapse panel: when open, the container animates its height from 0 to the natural height of its children, and back to 0 when closed. It needs to handle children whose height can change while open (text that reflows on resize, async content that loads in later). Give me the hook plus the minimal CSS. Keep it robust — I've been bitten before by the height being measured wrong.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

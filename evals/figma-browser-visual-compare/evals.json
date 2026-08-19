@@ -1,0 +1,23 @@
+{
+  "skill_name": "figma-browser-visual-compare",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement a small pill-shaped control from a Figma file as adaptive HTML/CSS, then compare a Figma 4x export with a Chromium 4x screenshot. Keep all comparison artifacts in the persistent workspace and explain the remaining visual differences.",
+      "expected_output": "A working adaptive implementation plus a runs-local iteration containing measured Figma and DOM hierarchy data and grouped expected, actual, and diff images.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Pick a compact card-like component from a Figma file, reproduce it in the browser, and use visual diffing to refine its geometry. The component has translucent styling, so make the comparison background explicit.",
+      "expected_output": "A browser implementation and a 4x comparison run that uses the same explicit background for Figma compositing and browser capture.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Recreate a small text-and-icon group from a Figma design and visually compare it in Storybook or an isolated browser fixture. Diagnose size mismatches before pixelmatch and do not hard-code screenshot constraints into the component.",
+      "expected_output": "An adaptive component, explicit measurement evidence, equal-sized captures, and a visual diagnosis that distinguishes typography raster differences from layout errors.",
+      "files": []
+    }
+  ]
+}

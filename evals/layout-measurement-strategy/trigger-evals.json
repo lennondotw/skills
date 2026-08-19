@@ -1,0 +1,23 @@
+[
+  {"query": "our card preview shows the wrong height for a frame — it renders like 3px tall then pops to full size, and the little status chip we pin to the corner ends up floating in the wrong spot. we read offsetHeight in a useLayoutEffect right after mount", "should_trigger": true},
+  {"query": "building a masonry grid and I need each tile's height before I lay it out so I can pack the columns. I clone the node into a hidden div on document.body but the numbers are off, especially for cards in our theme's compact spacing mode", "should_trigger": true},
+  {"query": "how do I animate a details/accordion from 0 to auto height in react so it also handles content that loads in async later without clipping or leaving a gap", "should_trigger": true},
+  {"query": "getBoundingClientRect().height keeps returning 0 the first time even though the element is clearly visible right after — I'm using it to size a canvas overlay that sits on top of a chart", "should_trigger": true},
+  {"query": "my virtualized feed jumps around while scrolling because my estimated row heights are wrong — rows with images and multi-line text are way off from the estimate", "should_trigger": true},
+  {"query": "I auto-size a textarea to its content but the measured height from a hidden mirror span comes back a few px short of how it actually renders, pretty sure it's the web font not being loaded when I measure", "should_trigger": true},
+  {"query": "I need the natural height of a tooltip's content to decide whether to flip it above or below the trigger, but measuring it while it's display:none just gives me zero", "should_trigger": true},
+  {"query": "we set the element we want to measure to height:0 and overflow:hidden and park it off to the side, but inside our flex toolbar it keeps reading back 0 instead of the real height", "should_trigger": true},
+  {"query": "my ResizeObserver fires with a tiny height first and then the real one a beat later, and my layout code already committed the tiny value — how do I only take the settled size", "should_trigger": true},
+  {"query": "porting a component into a shadow-dom web component and my offscreen measuring probe now returns totally wrong sizes compared to when it lived in the light dom", "should_trigger": true},
+
+  {"query": "what's the right width strategy for a reusable Button component — should it hug its label or fill its container? trying to nail down the sizing contract", "should_trigger": false},
+  {"query": "my flex child won't shrink below its content and overflows the row, I'm pretty sure it's the min-width thing — what's the clean fix", "should_trigger": false},
+  {"query": "I'm using a ResizeObserver to switch a card between a compact and an expanded layout at a width breakpoint — would a container query be cleaner here?", "should_trigger": false},
+  {"query": "reserve space for images so the page doesn't shift around while they load — is aspect-ratio or the width/height attributes the better call for CLS", "should_trigger": false},
+  {"query": "how do I get the mouse position relative to a canvas element so I can draw where the user clicks", "should_trigger": false},
+  {"query": "a card scales up slightly on hover but the spring feels janky in Motion — how do I tune the stiffness and damping", "should_trigger": false},
+  {"query": "measure the p95 latency of our /feed API endpoint and log it to datadog", "should_trigger": false},
+  {"query": "my dropdown gets cut off at the bottom of the screen; I want it to open upward when there isn't room below — how do I detect the space to the viewport edge", "should_trigger": false},
+  {"query": "how do I read the current scroll position of a container and smooth-scroll it to a particular child element", "should_trigger": false},
+  {"query": "what CSS makes a div take up the full remaining height of a flex column without me hardcoding a pixel value", "should_trigger": false}
+]

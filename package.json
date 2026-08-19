@@ -1,0 +1,21 @@
+{
+  "name": "lennondotw-skills",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "pnpm fmt:check && pnpm validate:skills",
+    "fmt": "dprint fmt",
+    "fmt:check": "dprint check",
+    "validate:skills": "node scripts/validate-skills.mjs"
+  },
+  "devDependencies": {
+    "dprint": "^0.51.1"
+  },
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  }
+}
+

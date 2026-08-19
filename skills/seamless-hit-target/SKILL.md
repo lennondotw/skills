@@ -36,7 +36,7 @@ continuous instead of brittle.
 <button className="relative size-6 rounded-md focus-visible:ring-2">
   <span className="absolute -left-1 -right-2 -top-1.5 -bottom-1.5" />
   <Icon className="relative size-4" />
-</button>
+</button>;
 ```
 
 The button remains `24x24`, so keyboard focus is correct. The hit layer is larger and can extend asymmetrically.
@@ -61,7 +61,7 @@ When controls are separated by a visual gap, split the gap between their hit box
     <span className="absolute -left-1.5 -right-1 -top-1 -bottom-1" />
     <MoreIcon />
   </button>
-</div>
+</div>;
 ```
 
 If the visual gap is `12px`, each neighboring target usually expands `6px` into it. If one side owns the interaction, give that side more of the gap deliberately.
@@ -75,7 +75,7 @@ Keep the visible hover/focus overlay sized to the visual box unless the design s
   <span className="absolute -right-1 -top-2 -bottom-2 left-0" />
   <span className="pointer-events-none absolute inset-0 rounded-lg bg-black/5 opacity-0 group-hover:opacity-100" />
   <MoreIcon className="relative" />
-</button>
+</button>;
 ```
 
 ## Checklist

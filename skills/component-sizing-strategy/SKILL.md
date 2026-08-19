@@ -44,7 +44,7 @@ Typical height scale for controls:
 Width API pattern:
 
 ```ts
-type Width = 'auto' | 'fill';
+type Width = "auto" | "fill";
 ```
 
 - `auto` → `inline-size: auto`
@@ -113,7 +113,7 @@ Typical row pattern:
   <Icon className="shrink-0" />
   <span className="min-w-0 truncate">{label}</span>
   <StatusDot className="shrink-0" />
-</div>
+</div>;
 ```
 
 ---

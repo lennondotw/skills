@@ -51,7 +51,7 @@ Useful source paths:
 `notifyLayoutUpdate()` calculates:
 
 ```ts
-layoutDelta = calcBoxDelta(layout, snapshot.layoutBox)
+layoutDelta = calcBoxDelta(layout, snapshot.layoutBox);
 ```
 
 For shared layout it also calculates a `visualDelta`, but the core idea is the same: old measured box vs new measured box. If a parent resizes or moves every frame, the child can appear to animate against a moving target.
@@ -77,7 +77,7 @@ So the practical rule is:
 // Meaningful relative projection root
 <motion.div layout layoutRoot>
   <motion.div layoutId="indicator" />
-</motion.div>
+</motion.div>;
 ```
 
 Bare `layoutRoot` is a red flag because React Motion only loads layout features for `layout` or `layoutId`, and `isProjecting()` requires layout data.
@@ -87,7 +87,7 @@ Bare `layoutRoot` is a red flag because React Motion only loads layout features 
 Relative projection subtracts an anchor point from the parent box:
 
 ```ts
-relative.min = child.min - parentAnchorPoint
+relative.min = child.min - parentAnchorPoint;
 ```
 
 Default anchor is the parent's top-left. `layoutAnchor={{ x: 0.5, y: 0.5 }}` uses the parent center. This can matter in centered/flex layouts where the visually stable reference is the center, not the left edge.
@@ -101,7 +101,7 @@ Use `LayoutGroup` to avoid accidental shared-element matches:
 ```tsx
 <LayoutGroup id={controlId}>
   <motion.div layoutId="indicator" />
-</LayoutGroup>
+</LayoutGroup>;
 ```
 
 Do not expect it to fix drift caused by parent resize.
@@ -147,7 +147,7 @@ Bad/incomplete experiment:
 ```tsx
 <motion.div layoutRoot>
   <Tabs />
-</motion.div>
+</motion.div>;
 ```
 
 Why incomplete: `layoutRoot` alone does not provide layout data and may not activate the layout feature path.
@@ -167,7 +167,7 @@ Working Motion fix:
       )}
     </Tabs.Tab>
   ))}
-</Tabs.List>
+</Tabs.List>;
 ```
 
 What this changes:
@@ -203,7 +203,7 @@ Do not write bare `layoutRoot`; it is usually not enough. The parent must partic
 ```tsx
 <motion.div layout layoutRoot>
   {isActive && <motion.div layoutId="indicator" />}
-</motion.div>
+</motion.div>;
 ```
 
 Why: `layoutRoot` makes the node a projecting relative parent only when it has layout data. In React Motion, the layout feature is enabled by `layout` or `layoutId`, not by `layoutRoot` alone.
@@ -213,7 +213,7 @@ For centered/flex layouts, consider anchoring relative projection to the visual 
 ```tsx
 <motion.div layout layoutRoot layoutAnchor={{ x: 0.5, y: 0.5 }}>
   <motion.div layoutId="indicator" />
-</motion.div>
+</motion.div>;
 ```
 
 Use `layoutAnchor={false}` only when relative projection is causing worse behavior and you want to opt out.
@@ -226,7 +226,7 @@ Use `layoutDependency` to prevent unrelated renders/resizes from starting a new 
 <motion.div
   layoutId="indicator"
   layoutDependency={selectedValue}
-/>
+/>;
 ```
 
 This says: "only snapshot/animate this layout when `selectedValue` changes." It is useful for selected-tab indicators that should animate on tab changes but not during pane resizing.
@@ -240,7 +240,7 @@ For shared layout handoffs, `layoutDependency` also affects whether the new lead
 ```tsx
 <LayoutGroup id={controlId}>
   <motion.div layoutId="indicator" />
-</LayoutGroup>
+</LayoutGroup>;
 ```
 
 If two unrelated components both use `layoutId="indicator"` without namespacing, Motion can connect them through the same shared stack.
@@ -252,7 +252,7 @@ If the apparent movement is caused by a scroll container, mark that container wi
 ```tsx
 <motion.div layoutScroll className="overflow-auto">
   <motion.div layout />
-</motion.div>
+</motion.div>;
 ```
 
 `layoutScroll` corrects scroll offsets. It does not fix ordinary parent resize or layout movement.

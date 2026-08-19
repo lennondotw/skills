@@ -23,7 +23,7 @@ Wrap the side element in a **zero-height flex container** with centered alignmen
   <div className="flex h-0 shrink-0 items-center">
     <Toggle />
   </div>
-</div>
+</div>;
 ```
 
 ## How It Works

@@ -34,9 +34,7 @@ export const Button: FC<
       {children}
       {allPossibleContents && allPossibleContents.length > 0 && (
         <div className="invisible flex h-0 flex-col overflow-clip leading-0">
-          {allPossibleContents.map((content, index) => (
-            <div key={index}>{content}</div>
-          ))}
+          {allPossibleContents.map((content, index) => <div key={index}>{content}</div>)}
         </div>
       )}
     </button>
@@ -65,7 +63,9 @@ The hidden container participates in the button's inline-size calculation. The b
 Pass all possible label values via `allPossibleContents`:
 
 ```tsx
-<Button allPossibleContents={[t('saving'), t('saved')]}>{isLoading ? t('saving') : t('saved')}</Button>
+<Button allPossibleContents={[t("saving"), t("saved")]}>
+  {isLoading ? t("saving") : t("saved")}
+</Button>;
 ```
 
 The current content naturally appears via `children`; the `allPossibleContents` array only needs to include **all variants** (including the current one is harmless — it just adds a redundant width contributor).
@@ -104,16 +104,14 @@ Decompose the content into **independent positions** instead, and reserve each p
 | Slots within the reservation | `sum` — a flex row of columns |
 
 ```tsx
-const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 /** Each `slots` entry is a column of alternatives contributing its widest; the row sums the slots. */
-const ReservedWidth = ({ slots }: { slots: string[][] }) => (
+const ReservedWidth = ({ slots }: { slots: string[][]; }) => (
   <span aria-hidden className="invisible flex h-0 flex-row overflow-clip leading-0">
     {slots.map((alternatives, index) => (
       <span className="flex flex-col" key={`${index}-${alternatives[0]}`}>
-        {alternatives.map((alternative) => (
-          <span key={alternative}>{alternative}</span>
-        ))}
+        {alternatives.map((alternative) => <span key={alternative}>{alternative}</span>)}
       </span>
     ))}
   </span>
@@ -124,9 +122,20 @@ const Knob = ({ label, value, max, onChange }: KnobProps) => (
   <label className="col-span-2 grid grid-cols-subgrid items-center">
     <span className="text-right">
       {label} {value}
-      <ReservedWidth slots={[[`${label}\u00a0`], ...Array.from({ length: String(max).length }, () => DIGITS)]} />
+      <ReservedWidth
+        slots={[
+          [`${label}\u00a0`],
+          ...Array.from({ length: String(max).length }, () => DIGITS),
+        ]}
+      />
     </span>
-    <input type="range" min={0} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} />
+    <input
+      type="range"
+      min={0}
+      max={max}
+      value={value}
+      onChange={(event) => onChange(Number(event.target.value))}
+    />
   </label>
 );
 ```
@@ -143,7 +152,8 @@ Because each row now reserves its own worst case, a shared grid column (`grid-co
 A few pixels of jitter are easy to miss and easy to reintroduce. Measure the neighbour that would move, at both ends of the value range:
 
 ```js
-const trackLeft = () => Math.round(document.querySelector('input[type=range]').getBoundingClientRect().left);
+const trackLeft = () =>
+  Math.round(document.querySelector("input[type=range]").getBoundingClientRect().left);
 // Set the value to min, mid, and max: trackLeft() must not change, and the row's
 // height must match what it was before the reservation was added.
 ```

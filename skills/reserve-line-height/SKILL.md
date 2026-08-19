@@ -24,13 +24,13 @@ The row must occupy one line whether `error` is truthy or not:
 
 ```tsx
 // Always reserves one line of height at the row's own text size.
-<p className="min-h-[1lh] text-sm/5 text-red-600">{error}</p>
+<p className="min-h-[1lh] text-sm/5 text-red-600">{error}</p>;
 ```
 
 If the surrounding layout risks collapsing an empty element (some nested flex parents do), keep a non-breaking space as a defensive backstop:
 
 ```tsx
-<p className="min-h-[1lh] text-sm/5 text-red-600">{error ?? '\u00A0'}</p>
+<p className="min-h-[1lh] text-sm/5 text-red-600">{error ?? "\u00A0"}</p>;
 ```
 
 ## Pattern B — Label ↔ spinner swap
@@ -39,8 +39,8 @@ When a button or inline slot swaps a text label for a loading spinner, the spinn
 
 ```tsx
 <button className="flex min-h-[1lh] items-center justify-center text-sm/5">
-  {isLoading ? <Spinner className="size-3" /> : 'Resend code'}
-</button>
+  {isLoading ? <Spinner className="size-3" /> : "Resend code"}
+</button>;
 ```
 
 The same treatment applies to anything swapping between states of different heights on the same line: inline status, countdown timers, icon-only indicators replacing a label.

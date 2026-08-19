@@ -1,0 +1,33 @@
+{
+  "skill_name": "pointer-drag-release",
+  "evals": [
+    {
+      "id": 1,
+      "name": "missing-pointerup-resizer",
+      "prompt": "Our React split-pane divider sometimes keeps following the cursor after the mouse button was released outside the browser window. We already call setPointerCapture on pointerdown and end the drag in pointerup. Review the interaction and show the robust event-handling pattern.",
+      "files": [],
+      "expectations": [
+        "Explains that pointer capture routes events but cannot deliver a release event the browser never received.",
+        "Ends the normal path on pointerup.",
+        "Recovers inside pointermove when the active pointer reports buttons === 0.",
+        "Handles lostpointercapture as an independent backstop.",
+        "Guards every active-drag handler with the initiating pointerId.",
+        "Does not use window blur as proof that the pointer button was released."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "cancel-and-multipointer-semantics",
+      "prompt": "Implement pointer handling for a slider whose value commits when a drag ends, reverts when the browser invalidates the gesture, and cannot be hijacked by a second finger. Explain the event semantics that determine each outcome.",
+      "files": [],
+      "expectations": [
+        "Treats pointercancel as invalidation and restores the value captured at pointerdown.",
+        "Commits on pointerup, buttons === 0 recovery, and lostpointercapture.",
+        "Ignores a second pointerdown while one pointer owns the drag.",
+        "Releases pointer capture only for the active pointer when capture is still held.",
+        "Prevents native text selection or drag-and-drop from taking over the custom drag."
+      ]
+    }
+  ]
+}
+

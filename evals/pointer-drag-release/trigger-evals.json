@@ -1,0 +1,42 @@
+[
+  {
+    "query": "the split-pane divider is still attached to my cursor after I released the mouse outside the window",
+    "should_trigger": true
+  },
+  {
+    "query": "our canvas drag sometimes never ends because pointerup is missing",
+    "should_trigger": true
+  },
+  {
+    "query": "review this resizer built with setPointerCapture, pointermove, and pointercancel",
+    "should_trigger": true
+  },
+  {
+    "query": "a second finger takes over the first finger's slider drag",
+    "should_trigger": true
+  },
+  {
+    "query": "the first mouse move after returning to the tab has buttons set to zero but the drag remains active",
+    "should_trigger": true
+  },
+  {
+    "query": "use ResizeObserver to resize a panel when its content changes",
+    "should_trigger": false
+  },
+  {
+    "query": "my Motion drag animation feels too bouncy",
+    "should_trigger": false
+  },
+  {
+    "query": "make a textarea grow to match its scrollHeight",
+    "should_trigger": false
+  },
+  {
+    "query": "increase the visual and clickable width of a divider handle",
+    "should_trigger": false
+  },
+  {
+    "query": "keep a draggable card inside its parent bounds",
+    "should_trigger": false
+  }
+]

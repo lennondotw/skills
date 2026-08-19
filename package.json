@@ -2,6 +2,12 @@
   "name": "lennondotw-skills",
   "version": "0.0.0",
   "private": true,
+  "description": "Reusable agent skills distilled from real engineering failures.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lennondotw/skills.git"
+  },
   "type": "module",
   "scripts": {
     "check": "pnpm fmt:check && pnpm validate:skills",
@@ -18,4 +24,3 @@
     "pnpm": ">=10"
   }
 }
-

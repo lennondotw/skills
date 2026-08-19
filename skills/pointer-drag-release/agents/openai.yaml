@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pointer Drag Release"
+  short_description: "Build pointer drags that always release cleanly"
+  default_prompt: "Use $pointer-drag-release to fix this sticky resize or drag interaction."

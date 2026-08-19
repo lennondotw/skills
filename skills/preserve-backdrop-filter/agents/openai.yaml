@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backdrop Filter and Motion"
+  short_description: "Keep backdrop blur intact through CSS and Motion animations"
+  default_prompt: "Use $preserve-backdrop-filter to diagnose and fix this animated backdrop-filter regression."

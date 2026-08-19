@@ -1,0 +1,4 @@
+interface:
+  display_name: "Intent-Derived UI State"
+  short_description: "Derive responsive UI from durable user intent"
+  default_prompt: "Use $intent-derived-ui-state to refactor this UI state model so context changes do not overwrite user intent."

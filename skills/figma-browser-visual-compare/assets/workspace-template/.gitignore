@@ -1,0 +1,11 @@
+/node_modules/
+/.pnpm-store/
+
+# Persistent local run output. Keep these on disk, but do not commit them.
+/runs-local/
+/cache/
+/.tmp/
+
+# Local machine noise.
+.DS_Store
+*.log

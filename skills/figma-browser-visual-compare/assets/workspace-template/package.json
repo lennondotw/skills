@@ -1,0 +1,26 @@
+{
+  "name": "figma-browser-visual-compare-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared harness workspace for comparing Figma references against real browser screenshots.",
+  "scripts": {
+    "figma:me": "tsx scripts/figma-me.mts",
+    "compare": "tsx scripts/compare-figma-browser.mts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@figma/rest-api-spec": "^0.41.0",
+    "commander": "^15.0.0",
+    "figma-api": "2.2.1-beta",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.61.1",
+    "pngjs": "^7.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}

@@ -32,6 +32,7 @@ missing. The skill distinguishes normal completion from cancellation and covers 
 
 | Skill                            | Focus                                                                  |
 | -------------------------------- | ---------------------------------------------------------------------- |
+| `avoid-layout-magic-numbers`     | Replace unexplained fixed dimensions with explicit layout contracts.   |
 | `backdrop-filter-rounded-clip`   | Split tint and blur layers to avoid rounded glass edge artifacts.      |
 | `boundary-driven-defense`        | Parse at system boundaries and trust validated internal types.         |
 | `check-domain-availability`      | Check domain availability directly through authoritative RDAP data.    |

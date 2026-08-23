@@ -62,6 +62,7 @@ missing. The skill distinguishes normal completion from cancellation and covers 
 | `stable-width-button`            | Reserve dynamic label width to prevent button jitter.                  |
 | `standalone-divider-spacer`      | Keep dividers and fixed gaps independent from content elements.        |
 | `tailwind-consolidate-classes`   | Consolidate static utility classes in class-merging helpers.           |
+| `tap-drag-threshold`             | Separate taps from drags and choose what the threshold gates.          |
 | `visual-interaction-repro-first` | Reproduce rendering-dependent defects before changing implementation.  |
 | `web-layout-best-practices`      | Apply resilient CSS and Storybook layout patterns.                     |
 | `web-ui-standards`               | Apply accessible responsive UI and design-system standards.            |
